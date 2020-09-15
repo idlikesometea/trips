@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import ReactMapGL from 'react-map-gl';
+// import TripsList from './components/TripsList';
 
-function App() {
+const trips = [
+  {name: 'Eurotrip 2018'}, 
+  {name: 'Italia 2017'},
+  {name: 'NYC - Spain 2019'}
+];
+
+export default () => {
+  const [viewport, setViewport] = useState({
+    width: 'fit',
+    height: '100vh',
+    latitude: 21.1458,
+    longitude: 79.0882,
+    zoom: 1
+  });
+
+  const [trip, setTrip] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <ReactMapGL
+        {...viewport}
+        onViewportChange={nextViewport => setViewport(nextViewport)}
+        mapStyle='mapbox://styles/idlikesometea/ckf4a8clu143419kwbj44nshd'
+        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+      />
+
+      {/* <TripsList 
+        trips={trips}
+        onTripsChange={setTrip} 
+      /> */}
     </div>
   );
 }
-
-export default App;

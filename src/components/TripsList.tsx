@@ -1,9 +1,12 @@
 import React from 'react';
 
-const TripsList = ({trips, onTripsChange}) => {
+import './TripsList.css';
+import Trip from '../models/Trips.model';
+
+const TripsList = ({trips, onTripsChange}: {trips:Trip[], onTripsChange:any}) => {
     const tripsList = trips.map((trip, index) => {
         return (
-            <li key={index}>
+            <li key={index} onClick={() => {onTripsChange(trip)}}>
                 {trip.name}
             </li>
         );

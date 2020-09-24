@@ -13,5 +13,5 @@ export const InitialViewPort: Viewport = {
     height: '100vh',
     latitude: 20,
     longitude: -15,
-    zoom: 1
+    zoom: 2
 }

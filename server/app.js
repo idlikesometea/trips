@@ -1,28 +1,19 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
 
-const bodyParser = require('body-parser');
+// routes
+const tripsRoutes = require('./routes/trips');
+
+// controllers
+const configController = require('./controllers/config');
+const errorController = require('./controllers/errors');
 
 app.use(bodyParser.urlencoded( {extended: false}));
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-  );
-  next();
-});
+app.use(configController.setHeaders);
 
-app.use((req, res, next) => {
-  res.status(404).json({
-    success: false,
-    error: 'Resource not found'
-  });
-});
+app.use('/trips', tripsRoutes);
+app.use(errorController.get404);
 
 app.listen(8000);

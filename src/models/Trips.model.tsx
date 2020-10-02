@@ -1,3 +1,3 @@
 export default interface Trip {
-    name: string;
+    name?: string;
 }

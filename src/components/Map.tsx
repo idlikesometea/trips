@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 
 import './Map.css';
 import api from '../services/api';
 import maps from '../utils/maps';
+import Trip from '../models/Trips.model';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || '';
 
-const Map = () => {
+const Map = ({ trip }: { trip:Trip }) => {
   let mapRef = useRef<HTMLDivElement>(null);
   let map;
 
@@ -18,9 +19,7 @@ const Map = () => {
       center: [-50, 40],
       zoom: 1.8
     });
-  }, []);
 
-  useEffect(() => {
     map.on('load',() => {
       getCountries(3)
         .then(countries => {
@@ -29,6 +28,10 @@ const Map = () => {
       });
     });
   }, []);
+
+  useEffect(() => {
+    console.log(trip, 'map trip');
+  }, [trip]);
 
   const getCountries = async user => {
     const response = await api.get(`/trips/countries/${user}`);

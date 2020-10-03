@@ -12,7 +12,7 @@ const getStops = (countries) => {
 }
 
 const highlightCountries = (map, countries) => {
-  return map.addLayer({
+  map.addLayer({
     id: 'countries',
     type: 'fill',
     paint: {
@@ -31,5 +31,5 @@ const highlightCountries = (map, countries) => {
 };
 
 export default {
-    highlightCountries
-}
+  highlightCountries
+};

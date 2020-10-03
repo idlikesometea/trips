@@ -27,9 +27,8 @@ const Map = ({ trip, countries }: { trip:Trip, countries:any }) => {
 
   useEffect(() => {
     if (countries.length > 0) {
-      let mapCurr = map.current;
-      mapCurr = maps.highlightCountries(mapCurr, countries);
-      mapCurr.setFilter('countries', ['in', 'ADM0_A3_IS'].concat(countries));
+      maps.highlightCountries(map.current, countries);
+      map.current.setFilter('countries', ['in', 'ADM0_A3_IS'].concat(countries));
     }
   }, [countries]);
 

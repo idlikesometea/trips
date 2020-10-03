@@ -12,22 +12,22 @@ const getStops = (countries) => {
 }
 
 const highlightCountries = (map, countries) => {
-    return map.addLayer({
-        id: 'countries',
-        type: 'fill',
-        paint: {
-          'fill-color': {
-            property: 'ADM0_A3_IS',
-            type: 'categorical',              
-            stops: getStops(countries)
-          }
-        },
-        source: {
-          'type': 'vector',
-          'url': 'mapbox://idlikesometea.a56wdqwz'
-        },
-        "source-layer": 'ne_10m_admin_0_countries-4c5tp1'
-    }, 'settlement-minor-label');  
+  return map.addLayer({
+    id: 'countries',
+    type: 'fill',
+    paint: {
+      'fill-color': {
+        property: 'ADM0_A3_IS',
+        type: 'categorical',              
+        stops: getStops(countries)
+      }
+    },
+    source: {
+      'type': 'vector',
+      'url': 'mapbox://idlikesometea.a56wdqwz'
+    },
+    "source-layer": 'ne_10m_admin_0_countries-4c5tp1'
+  }, 'settlement-minor-label');  
 };
 
 export default {

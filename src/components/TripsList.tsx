@@ -1,35 +1,58 @@
 import React, { useEffect, useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
 
 import './TripsList.css';
-import api from '../services/api';
 import Trip from '../models/Trips.model';
+import { fetchTrips } from '../actions';
 
 
-const TripsList = ({onTripSelect}) => {
-    const [trips, setTrips] = useState([]);
+const TripsList = ({onTripSelect, trips, loading}) => {
+	const [activeTrip, setActiveTrip] = useState<Trip>({});
+	const dispatch = useDispatch();
 
-    useEffect(() => {
-			api.get('/trips/3')
-				.then(response => {
-					setTrips(response.data.data);
-				});
-    }, []);
+	useEffect(() => {
+		dispatch(fetchTrips(3));
+	}, [dispatch]);
 
-    const tripsList = trips.map((trip:Trip, index) => {
-			return (
-				<li key={index} onClick={() => {onTripSelect(trip)}}>
-					{trip.name}
-				</li>
-			);
-    });
+	const tripsList = trips.map((trip:Trip, index) => {
+		return (
+			<li key={index} onClick={() => {onTripSelect(trip);setActiveTrip(trip)}}>
+				{trip.name}
+			</li>
+		);
+	});
 
-    return (
+	const tripSelected = (
+		<div>
+			<button onClick={() => {setActiveTrip({})}}>X</button>
+			<p> {activeTrip.name} </p>
+		</div>
+	);
+
+	if (loading) {
+		return (
 			<div className="trips-list">
-				<ul>
-					{tripsList}
-				</ul>
+				<h3>Loading</h3>
 			</div>
-    );
+		)
+	}
+
+	return (
+		<div className="trips-list">
+			<ul>
+				{ activeTrip.name
+					? ( tripSelected )
+					: ( tripsList ) 
+				}
+			</ul>
+		</div>
+	);
 }
 
-export default TripsList;
+const mapStateToProps = state => {
+	return { trips: state.trips.data, loading: state.trips.loading }
+};
+
+export default connect(mapStateToProps, {
+	fetchTrips
+})(TripsList);

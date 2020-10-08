@@ -2,21 +2,16 @@ const googleDrive = require('../apis/googleDrive');
 
 exports.trips = (req, res) => {
     const userId = req.params.userId;
-    console.log(userId);
     const trips = [
         {id: 1, name: 'Las Vegas 2018'},
         {id: 2, name: 'NYC - Spain 2019'},
         {id: 3, name: 'Eurotrip 2018'}, 
     ];
-    res.status(200).json({
-        success: true,
-        data: trips
-    });
+    res.status(200).json(trips);
 };
 
 exports.countries = (req, res) => {
     const userId = req.params.userId;
-    console.log(userId);
     const countries = [
         'USA', 'MEX', 'CAN', 'CRI', 'CUB', 'ESP', 'FRA', 'NLD',
         'ITA', 'DEU', 'PRT', 'CHE', 'AUT', 'LIE', 'SVN', 'HRV',

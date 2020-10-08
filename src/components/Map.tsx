@@ -14,7 +14,7 @@ const getNewCenter = (locations) => {
   return [locations[0].longitude, locations[0].latitude];
 }
 
-const Map = ({ trip, countries }: { trip:Trip, countries:string[] }) => {
+const Map = ({ trip, countries, loading }: { trip:Trip, countries:string[], loading:boolean }) => {
   let mapRef = useRef<HTMLDivElement>(null);
   let map = useRef<any>();
   const dispatch = useDispatch();
@@ -80,7 +80,7 @@ const Map = ({ trip, countries }: { trip:Trip, countries:string[] }) => {
 };
 
 const mapPropsToState = state => {
-  return { countries: state.countries };
+  return { countries: state.countries.data, loading: state.countries.loading };
 }
 
 export default connect(mapPropsToState, {

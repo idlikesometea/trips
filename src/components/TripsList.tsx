@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 
 import './TripsList.css';
 import Trip from '../models/Trips.model';
-import { fetchTrips } from '../actions';
+import { fetchTrips, selectTrip, resetTrip } from '../actions';
 
 
-const TripsList = ({onTripSelect, trips, loading}) => {
-	const [activeTrip, setActiveTrip] = useState<Trip>({});
+const TripsList = ({trips, loading, activeTrip}) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dispatch(fetchTrips(3));
 	}, [dispatch]);
 
-	const tripsList = trips.map((trip:Trip, index) => {
+	const tripsList = trips.map((trip:Trip) => {
 		return (
-			<li key={index} onClick={() => {onTripSelect(trip);setActiveTrip(trip)}}>
+			<li key={trip.id} onClick={() => {dispatch(selectTrip(trip.id))}}>
 				{trip.name}
 			</li>
 		);
@@ -24,7 +23,7 @@ const TripsList = ({onTripSelect, trips, loading}) => {
 
 	const tripSelected = (
 		<div>
-			<button onClick={() => {setActiveTrip({})}}>X</button>
+			<button onClick={() => dispatch(resetTrip())}>X</button>
 			<p> {activeTrip.name} </p>
 		</div>
 	);
@@ -50,9 +49,15 @@ const TripsList = ({onTripSelect, trips, loading}) => {
 }
 
 const mapStateToProps = state => {
-	return { trips: state.trips.data, loading: state.trips.loading }
+	return { 
+		trips: state.trips.data, 
+		activeTrip: state.trips.activeTrip,
+		loading: state.trips.loading
+	}
 };
 
 export default connect(mapStateToProps, {
-	fetchTrips
+	fetchTrips,
+	selectTrip,
+	resetTrip
 })(TripsList);

@@ -12,7 +12,7 @@ const getStops = (countries) => {
 }
 
 const highlightCountries = (map, countries) => {
-  map.addLayer({
+  return map.addLayer({
     id: 'countries',
     type: 'fill',
     paint: {

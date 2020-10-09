@@ -7,6 +7,5 @@ const router = express.Router();
 router.get('/:userId', tripsController.trips);
 router.get('/countries/:userId', tripsController.countries);
 router.get('/files/:tripId', tripsController.files);
-router.get('/file/:fileId', tripsController.file);
 
 module.exports = router;

@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Map from './Map';
 import TripsList from './TripsList';
 
 export default () => {
-  const [trip, setTrip] = useState({});
 
   return (
     <div>
-      <Map trip={trip} />
-      <TripsList onTripSelect={setTrip} />
+      <Map />
+      <TripsList />
     </div>
   );
 }

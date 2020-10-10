@@ -1,7 +1,8 @@
 const initialState = {
-    loading: false,
-    data: [],
-    activeTrip: {}
+    loadingTrips: false,
+    loadingTrip: false,
+    trips: [],
+    trip: {}
 };
 
 export default (state = initialState, action) => {
@@ -10,23 +11,34 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 trips: [],
-                loading: true
+                loadingTrips: true
             };
         case 'FETCH_TRIPS':
             return {
                 ...state,
-                data: action.payload,
-                loading: false
+                trips: action.payload,
+                loadingTrips: false
             };
-        case 'SELECT_TRIP':
+        case 'FETCH_TRIP_LOAD':
             return {
                 ...state,
-                activeTrip: action.payload
+                loadingTrip: true
+            };
+        case 'FETCH_TRIP':
+            return {
+                ...state,
+                loadingTrip: false,
+                trip: action.payload
+            };
+        case 'FETCH_TRIP_ERROR':
+            return {
+                ...state,
+                loadingTrip: false
             };
         case 'RESET_TRIP':
             return {
                 ...state,
-                activeTrip: {}
+                trip: {}
             };
         default:
             return state;

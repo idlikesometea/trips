@@ -3,9 +3,10 @@
     top:0;
     background-color: rgba(255, 255, 255, 0.2);
     color: #ffffff;
-    padding: 0 1em;
+    padding: 0.5em 1em;
     margin: 1em;
-    width: 250px;
+    z-index: 1;
+    min-width: 280px;
 }
 
 ul {
@@ -16,12 +17,22 @@ ul {
 
 li {
     margin-bottom: 0.5em;
+    padding: 1em;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 0.5em;
     border-radius: 4px;
     cursor: pointer;
 }
 
 li:hover {
     background-color: rgba(255, 255, 255, 0.1);
+}
+
+.active-trip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.active-trip p {
+    font-size: large;
 }

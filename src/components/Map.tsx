@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { connect, useDispatch } from 'react-redux';
 
+import TripsList from './TripsList';
 import './Map.css';
 import maps from '../utils/maps';
 import Trip from '../models/Trips.model';
@@ -56,6 +57,8 @@ const Map = ({ trip, countries, loading }: { trip:Trip, countries:string[], load
 
   return (
     <div>
+      <TripsList />
+      {loading ? <div className="loading-alert">Loading countries</div> : null}
       <div ref={mapRef} id="mapContainer" className="mapContainer"></div>
     </div>
   );

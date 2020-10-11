@@ -3,7 +3,8 @@ import { connect, useDispatch } from 'react-redux';
 
 import Trip from '../models/Trips.model';
 import { fetchTrips, selectTrip, resetTrip } from '../actions';
-
+import './TripsList.css';
+import Loader from './Loader';
 
 const TripsList = ({trips, loadingTrips, selectedTrip, loadingTrip}) => {
 	const dispatch = useDispatch();
@@ -21,32 +22,27 @@ const TripsList = ({trips, loadingTrips, selectedTrip, loadingTrip}) => {
 	});
 
 	const tripSelected = (
-		<div>
-			<button onClick={() => dispatch(resetTrip())}>X</button>
+		<div className="active-trip">
+			<button className="circular ui icon button" onClick={() => dispatch(resetTrip())}>
+  				<i className="icon angle left"></i>
+			</button>
 			<p> {selectedTrip.name} </p>
 		</div>
 	);
 
-	if (loadingTrips) {
-		return <h3>Loading</h3>
-	}
-
-	if (loadingTrip) {
-		return (
-			<div>
-				{ tripSelected }
-				<h3>Loading pictures</h3>
-			</div>
-		)
-	}
-
 	return (
-		<ul>
+		<div className="trips-list">
 			{ selectedTrip.name
 				? ( tripSelected )
-				: ( tripsList ) 
+				: ( loadingTrips || loadingTrip )
+					? null
+					: (<ul> { tripsList } </ul>)
 			}
-		</ul>
+			{ loadingTrips || loadingTrip
+				? <Loader text="Loading" />
+				: null
+			}
+		</div>
 	);
 }
 

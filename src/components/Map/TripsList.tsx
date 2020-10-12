@@ -4,7 +4,7 @@ import { connect, useDispatch } from 'react-redux';
 import Trip from '../../models/Trips.model';
 import { fetchTrips, selectTrip, resetTrip } from '../../actions';
 import './TripsList.css';
-import Loader from '../Loader';
+import Loader from '../ui/Loader';
 
 const TripsList = ({trips, loadingTrips, selectedTrip, loadingTrip}) => {
 	const dispatch = useDispatch();

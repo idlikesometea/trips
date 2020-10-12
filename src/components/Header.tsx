@@ -9,7 +9,7 @@ export default () => {
             <Link to="/" className="item">Trips</Link>
             <div className="right menu">
                 <Link to="/admin" className="item">Log In</Link>
-                <a href="https://github.com/idlikesometea/trips" target="_blank" className="item">
+                <a href="https://github.com/idlikesometea/trips" target="_blank" rel="noopener noreferrer" className="item">
                     <i className="github icon"></i>
                  </a>
             </div>

@@ -4,9 +4,9 @@ import { connect, useDispatch } from 'react-redux';
 
 import TripsList from './TripsList';
 import './Map.css';
-import maps from '../utils/maps';
-import Trip from '../models/Trips.model';
-import { fetchCountries } from '../actions';
+import maps from '../../utils/maps';
+import Trip from '../../models/Trips.model';
+import { fetchCountries } from '../../actions';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || '';
 
@@ -56,7 +56,7 @@ const Map = ({ trip, countries, loading }: { trip:Trip, countries:string[], load
   }, [trip]);
 
   return (
-    <div>
+    <div className="appContainer">
       <TripsList />
       {loading ? <div className="loading-alert">Loading countries</div> : null}
       <div ref={mapRef} id="mapContainer" className="mapContainer"></div>

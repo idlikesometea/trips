@@ -24,16 +24,14 @@ const Map = ({ trip, countries, loading }: { trip:Trip, countries:string[], load
       center: [-50, 40],
       zoom: 1.8
     }).on('load', () => {
-      dispatch(fetchCountries(3));
+      if (!countries.length) {
+        dispatch(fetchCountries(3));
+      } else {
+        maps.highlightCountries(map.current, countries);
+        map.current.setFilter('countries', ['in', 'ADM0_A3_IS'].concat(countries));
+      }
     });
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (countries.length) {
-      maps.highlightCountries(map.current, countries);
-      map.current.setFilter('countries', ['in', 'ADM0_A3_IS'].concat(countries));
-    }
-  }, [countries]);
+  }, [dispatch,countries]);
 
   useEffect(() => {
     if (trip.name) {

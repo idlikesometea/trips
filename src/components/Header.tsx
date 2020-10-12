@@ -8,7 +8,10 @@ export default () => {
         <div id="map-menu" className="ui secondary pointing menu">
             <Link to="/" className="item">Trips</Link>
             <div className="right menu">
-                <Link to="/admin" className="item">Admin</Link>
+                <Link to="/admin" className="item">Log In</Link>
+                <a href="https://github.com/idlikesometea/trips" target="_blank" className="item">
+                    <i className="github icon"></i>
+                 </a>
             </div>
         </div>
     )

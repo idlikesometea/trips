@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import GoogleAuth from './Admin/GoogleAuth';
 
 import './Header.css';
 
@@ -9,7 +10,7 @@ export default () => {
             <Link to="/map" className="item">Trips</Link>
             <div className="right menu">
                 <Link to="/" className="item">Dashboard</Link>
-                <Link to="/login" className="item">Log In</Link>
+                <GoogleAuth />
                 <a href="https://github.com/idlikesometea/trips" target="_blank" rel="noopener noreferrer" className="item">
                     <i className="github icon"></i>
                  </a>

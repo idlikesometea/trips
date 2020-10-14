@@ -9,7 +9,7 @@ exports.trips = (req, res) => {
 };
 
 exports.countries = (req, res) => {
-    const userId = req.params.userId;
+    const mapId = req.params.mapId;
     res.status(200).json(countries);
 };
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { connect, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import TripsList from './TripsList';
 import './Map.css';
@@ -16,22 +17,27 @@ const Map = ({ trip, countries, loading }: { trip:Trip, countries:string[], load
   let markers = useRef<any>([]);
   let activeTrip = useRef<boolean>(false);
   const dispatch = useDispatch();
-  
+  const { id } = useParams();
+
   useEffect(() => {
     map.current = new mapboxgl.Map({
       container: mapRef.current || 'mapContainer',
       style: 'mapbox://styles/idlikesometea/ckf7l0oec0ila19mpxv1j1132',
       center: [-50, 40],
       zoom: 1.8
-    }).on('load', () => {
-      if (!countries.length) {
-        dispatch(fetchCountries(3));
-      } else {
-        maps.highlightCountries(map.current, countries);
-        map.current.setFilter('countries', ['in', 'ADM0_A3_IS'].concat(countries));
-      }
-    });
-  }, [dispatch,countries]);
+    })
+  }, []);
+
+  useEffect(() => {
+    if (!countries.length) {
+      map.current.on('load', () => {
+        dispatch(fetchCountries(id));
+      })
+    } else {
+      maps.highlightCountries(map.current, countries);
+      map.current.setFilter('countries', ['in', 'ADM0_A3_IS'].concat(countries));      
+    }
+  }, [dispatch, countries, id]);
 
   useEffect(() => {
     if (trip.name) {

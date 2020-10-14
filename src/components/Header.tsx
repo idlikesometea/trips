@@ -7,7 +7,7 @@ import './Header.css';
 export default () => {
     return (
         <div id="map-menu" className="ui secondary pointing menu">
-            <Link to="/map" className="item">Trips</Link>
+            <Link to="/m/" className="item">Trips</Link>
             <div className="right menu">
                 <Link to="/" className="item">Dashboard</Link>
                 <GoogleAuth />

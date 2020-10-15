@@ -1,41 +1,32 @@
 import React, { Component } from 'react';
 
-class Dashboard extends Component {
+import { connect } from 'react-redux';
+import Login from './Login';
+
+interface Props {
+    userLogged: boolean;
+    userId: number;
+    signIn: (userId:number) => void;
+    signOut: () => void;
+};
+
+
+class Dashboard extends Component<Props> {
     render() {
-        return (
-            <div className="ui placeholder segment">
-                <div className="ui two column stackable center aligned grid">
-                    <div className="ui vertical divider">Or</div>
-                    <div className="middle aligned row">
-                        <div className="column">
-                            <div className="ui icon header">
-                                <i className="search icon"></i>
-                                Find Country
-                            </div>
-                            <div className="field">
-                                <div className="ui search">
-                                    <div className="ui icon input">
-                                        <input className="prompt" type="text" placeholder="Search countries..." />
-                                        <i className="search icon"></i>
-                                    </div>
-                                    <div className="results"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="column">
-                            <div className="ui icon header">
-                                <i className="world icon"></i>
-                                Add New Country
-                            </div>
-                            <div className="ui primary button">
-                                Create
-                            </div>
-                        </div>
-                    </div>
+        if (!this.props.userLogged) {
+            return (
+                <div className="ui container">
+                    <Login />
                 </div>
-            </div>
-        );
+            );
+        }
+        
+        return <div>Dashboard</div>
     }
 }
 
-export default Dashboard;
+const mapStateToProps = (state) => {
+    return state.auth;
+};
+
+export default connect(mapStateToProps)(Dashboard);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import Header from './components/Header';
 import Dashboard from './components/Admin/Dashboard';
@@ -15,9 +15,11 @@ export default () => {
     <div>
       <BrowserRouter>
         <Header />
-        <Route path="/" exact component={Dashboard}></Route>
-        <Route path="/m/:id" component={Map}></Route>
-        <Route component={NotFound}></Route>
+        <Switch>
+          <Route path="/" exact component={Dashboard}></Route>
+          <Route path="/m/:id" component={Map}></Route>
+          <Route component={NotFound}></Route>
+        </Switch>
       </BrowserRouter>
       {/* <Message /> */}
     </div>

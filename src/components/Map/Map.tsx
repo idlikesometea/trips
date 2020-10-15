@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { connect, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -8,16 +8,19 @@ import './Map.css';
 import maps from '../../utils/maps';
 import Trip from '../../models/Trips.model';
 import { fetchCountries } from '../../actions';
+import api from '../../services/api';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || '';
 
-const Map = ({ trip, countries, loading }: { trip:Trip, countries:string[], loading:boolean }) => {
+const Map = ({ trip }: { trip:Trip }) => {
   let mapRef = useRef<HTMLDivElement>(null);
   let map = useRef<any>();
   let markers = useRef<any>([]);
   let activeTrip = useRef<boolean>(false);
   const dispatch = useDispatch();
   const { id } = useParams();
+  const [ countries, setCountries ] = useState([]);
+  const [ loadingCountries, setLoadingCountries ] = useState<boolean>(false);
 
   useEffect(() => {
     map.current = new mapboxgl.Map({
@@ -25,19 +28,23 @@ const Map = ({ trip, countries, loading }: { trip:Trip, countries:string[], load
       style: 'mapbox://styles/idlikesometea/ckf7l0oec0ila19mpxv1j1132',
       center: [-50, 40],
       zoom: 1.8
-    })
-  }, []);
+    }).on('load', () => {
+      setLoadingCountries(true);
+      api.get(`trips/countries/${id}`)
+        .then(response => {
+          setLoadingCountries(false);
+          setCountries(response.data);
+        })
+        .catch(err => setLoadingCountries(false));
+    });
+  }, [dispatch, id]);
 
   useEffect(() => {
-    if (!countries.length) {
-      map.current.on('load', () => {
-        dispatch(fetchCountries(id));
-      })
-    } else {
+    if (countries.length) {
       maps.highlightCountries(map.current, countries);
       map.current.setFilter('countries', ['in', 'ADM0_A3_IS'].concat(countries));      
     }
-  }, [dispatch, countries, id]);
+  }, [countries]);
 
   useEffect(() => {
     if (trip.name) {
@@ -62,7 +69,7 @@ const Map = ({ trip, countries, loading }: { trip:Trip, countries:string[], load
   return (
     <div className="appContainer">
       <TripsList />
-      {loading ? <div className="loading-alert">Loading countries</div> : null}
+      {loadingCountries ? <div className="loading-alert">Loading countries</div> : null}
       <div ref={mapRef} id="mapContainer" className="mapContainer"></div>
     </div>
   );
@@ -70,9 +77,7 @@ const Map = ({ trip, countries, loading }: { trip:Trip, countries:string[], load
 
 const mapPropsToState = state => {
   return { 
-    countries: state.countries.data, 
-    trip: state.trips.trip,
-    loading: state.countries.loading
+    trip: state.trips.trip
   };
 }
 

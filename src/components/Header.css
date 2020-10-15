@@ -3,6 +3,6 @@
     background: #081217;
 }
 
-#map-menu a.item {
+#map-menu a.item, #map-menu div.item {
     color: #fff;
 }

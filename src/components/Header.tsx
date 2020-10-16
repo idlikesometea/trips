@@ -11,7 +11,7 @@ const Header = ({auth}) => {
         <div id="map-menu" className="ui secondary pointing menu">
             <Link to="/m/3er44r45454hgj56j45" className="item">Trips</Link>
             <div className="right menu">
-                { !auth.userLogged ? <Link className="item" to="/">Create your map</Link> : null }
+                { !auth.userLogged ? <Link className="item" to="/create-map">Create your map</Link> : null }
                 { !auth.userLogged
                     ? <GoogleAuth />
                     : <UserItem />

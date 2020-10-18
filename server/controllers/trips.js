@@ -1,16 +1,34 @@
-const axios = require('axios');
-
-const {trips, countries} = require('../utils/database');
+const {trips, countries, userCountries} = require('../utils/database');
 const googleDrive = require('../apis/googleDrive');
 
-exports.trips = (req, res) => {
+exports.countries = (req, res) => {
+    const noFlag = ['aq', 'bq', 'cw', 'gg', 'im', 'je', 'bl', 'mf', 'sx', 'ss'];
+    const countryOptions = countries.map(country => {
+        const flag = !noFlag.includes(country["alpha-2"].toLowerCase()) ? country["alpha-2"].toLowerCase() : '';
+        return {
+            key: country["country-code"],
+            value: country["alpha-3"],
+            flag,
+            text: country.name
+        };
+    });
+    res.status(200).json(countryOptions);
+};
+
+exports.list = (req, res) => {
     const userId = req.params.userId;
     res.status(200).json(trips);
 };
 
-exports.countries = (req, res) => {
+exports.map = (req, res) => {
     const mapId = req.params.mapId;
-    res.status(200).json(countries);
+    res.status(200).json(userCountries);
+};
+
+exports.saveMap = (req, res) => {
+    res.status(200).json({
+        ...req.body
+    });
 };
 
 exports.files = (req, res) => {

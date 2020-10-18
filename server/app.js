@@ -10,7 +10,7 @@ const tripsRoutes = require('./routes/trips');
 const configController = require('./controllers/config');
 const errorController = require('./controllers/errors');
 
-app.use(bodyParser.urlencoded( {extended: false}));
+app.use(bodyParser.json());
 app.use(configController.setHeaders);
 
 app.use('/trips', tripsRoutes);

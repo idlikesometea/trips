@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Dropdown, Menu } from 'semantic-ui-react';
+import { Dropdown } from 'semantic-ui-react';
 
 import GoogleAuth from './Admin/GoogleAuth';
 import { User } from '../models/Auth.model';

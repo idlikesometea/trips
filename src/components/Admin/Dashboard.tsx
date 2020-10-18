@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { User } from '../../models/Auth.model';
 import Login from './Login';
 
 interface Props {
     userLogged: boolean;
-    userId: number;
-    signIn: (userId:number) => void;
+    user: User;
+    signIn: (user:User) => void;
     signOut: () => void;
 };
 
@@ -15,7 +16,17 @@ interface Props {
 class Dashboard extends Component<Props> {
 
     render() {
-        if (this.props.userLogged === false) {
+        if (this.props.userLogged === null) {
+            return (
+                <div className="ui container">
+                    <div className="ui segment">
+                        <div className="ui active inverted dimmer">
+                            <div className="ui large text loader">Loading</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        } else if (this.props.userLogged === false) {
             return (
                 <div className="ui container">
                     <Login />

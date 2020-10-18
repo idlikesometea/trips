@@ -23,7 +23,7 @@ const Header = ({auth}) => {
             </Menu.Item>
             <Menu.Item>
                 <a href="https://github.com/idlikesometea/trips" target="_blank" rel="noopener noreferrer">
-                    <img src="/github.png" />
+                    <img alt="Github logo on external anchor" src="/github.png" />
                 </a>
             </Menu.Item>
         </Menu>

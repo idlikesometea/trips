@@ -9,6 +9,8 @@ import NotFound from './components/404';
 import CreateMap from './components/Admin/CreateMap';
 // import Message from './components/ui/Message';
 
+import './App.css';
+
 
 export default () => {
 
@@ -19,7 +21,7 @@ export default () => {
         <Switch>
           <Route path="/" exact component={Dashboard}></Route>
           <Route path="/m/:id" component={Map}></Route>
-          <Route path="/create-map" component={CreateMap}></Route>
+          <Route path="/creator/:id?" component={CreateMap}></Route>
           <Route component={NotFound}></Route>
         </Switch>
       </BrowserRouter>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Menu } from 'semantic-ui-react';
 
 import './Header.css';
 import UserItem from './UserItem';
@@ -8,19 +9,24 @@ import GoogleAuth from './Admin/GoogleAuth';
 
 const Header = ({auth}) => {
     return (
-        <div id="map-menu" className="ui secondary pointing menu">
-            <Link to="/m/3er44r45454hgj56j45" className="item">Trips</Link>
-            <div className="right menu">
-                { !auth.userLogged ? <Link className="item" to="/create-map">Create your map</Link> : null }
-                { !auth.userLogged
+        <Menu inverted id="app-menu" size="mini">
+            <Menu.Item>
+                <Link to="/">
+                    { auth.userLogged === false ? 'Create your map' : 'Dashboard' }
+                </Link>
+            </Menu.Item>
+            <Menu.Item position="right">
+                { auth.userLogged === false
                     ? <GoogleAuth />
-                    : <UserItem />
+                    : <UserItem /> 
                 }
-                <a href="https://github.com/idlikesometea/trips" target="_blank" rel="noopener noreferrer" className="item">
-                    <i className="github icon"></i>
-                 </a>
-            </div>
-        </div>
+            </Menu.Item>
+            <Menu.Item>
+                <a href="https://github.com/idlikesometea/trips" target="_blank" rel="noopener noreferrer">
+                    <img src="/github.png" />
+                </a>
+            </Menu.Item>
+        </Menu>
     );
 };
 

@@ -1,8 +1,18 @@
 import React from 'react';
 import GoogleAuth from './GoogleAuth';
 
+import { Redirect } from 'react-router-dom';
+
 class Login extends React.Component {
+    state = {
+        redirect: ''
+    };
+
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+        }
+
         return (
             <div className="ui placeholder segment">
                 <div className="ui two column stackable center aligned grid">
@@ -16,7 +26,7 @@ class Login extends React.Component {
                             <div className="field">
                                 <div className="ui search">
                                     <div className="ui icon input">
-                                        <input className="prompt" type="text" placeholder="Search countries..." />
+                                        <input className="prompt" type="text" placeholder="Search countries..." onFocus={() => this.setState({redirect:'/creator'})}/>
                                         <i className="search icon"></i>
                                     </div>
                                     <div className="results"></div>

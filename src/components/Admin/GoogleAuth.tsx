@@ -2,11 +2,12 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import { signIn, signOut } from '../../actions';
+import { User } from '../../models/Auth.model';
 
 interface Props {
     userLogged: boolean;
-    userId: number;
-    signIn: (userId:number) => void;
+    user: User;
+    signIn: (user:User) => void;
     signOut: () => void;
 }
 
@@ -28,9 +29,16 @@ class GoogleAuth extends React.Component<Props> {
     }
 
     onAuthChange = (isLoggedIn) => {
-        if (isLoggedIn) 
-            this.props.signIn(this.auth.currentUser.get().getId());
-        else 
+        if (isLoggedIn) {
+            const user = {
+                id: this.auth.currentUser.get().getId(),
+                givenName: this.auth.currentUser.get().getBasicProfile().getGivenName(),
+                familyName: this.auth.currentUser.get().getBasicProfile().getFamilyName(),
+                imageUrl: this.auth.currentUser.get().getBasicProfile().getImageUrl(),
+                email: this.auth.currentUser.get().getBasicProfile().getEmail() 
+            };
+            this.props.signIn(user);
+        } else 
             this.props.signOut();
     }
 

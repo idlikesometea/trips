@@ -1,6 +1,8 @@
 import React from 'react';
 import { Dropdown } from 'semantic-ui-react';
 
+import { RouteProps } from 'react-router-dom';
+
 const countryOptions = [
     { key: 'af', value: 'af', flag: 'af', text: 'Afghanistan' },
     { key: 'ax', value: 'ax', flag: 'ax', text: 'Aland Islands' },
@@ -13,17 +15,22 @@ const countryOptions = [
     { key: 'ag', value: 'ag', flag: 'ag', text: 'Antigua' },
 ];
 
-class CreateMap extends React.Component {
+
+class CreateMap extends React.Component<RouteProps> {
     state = {
         selectedCountries: []
     };
 
-    renderCountriesList() {
-        const countriesList = this.state.selectedCountries.map(country => {
-            return <div key={country}> {country} </div>;
-        });
+    componentDidMount() {
+        const mapId = this.props.match.params.id;
 
-        return <div className="ui relaxed list divided"> {countriesList} </div>
+        if (mapId) {
+            console.log('should fetch countries');
+        }
+    }
+
+    saveCountries = () => {
+        console.log('...saving: ', this.state.selectedCountries);
     }
 
     render() {
@@ -41,7 +48,7 @@ class CreateMap extends React.Component {
                     onChange={(event, {value}) => this.setState({selectedCountries:value})}
                 />
 
-                {this.renderCountriesList()}
+                <button className="ui button" onClick={this.saveCountries}>Save map</button>
             </div>
         )
     }

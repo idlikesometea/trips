@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dropdown } from 'semantic-ui-react';
 
-export default ({countryOptions, selectedCountries, onSelectCountries, onSaveCountries}) => {
+export default ({countryOptions, selectedCountries, onSelectCountries, onSaveCountries, loading}) => {
     return (
         <div>
             <Dropdown
@@ -16,7 +16,14 @@ export default ({countryOptions, selectedCountries, onSelectCountries, onSaveCou
                 placeholder='Select countries'
                 onChange={(event, {value}) => onSelectCountries(value)}
             />
-            <button className="ui primary button" onClick={onSaveCountries}>Save map</button>
+            <br />
+            <button 
+                className={`ui primary button ${loading ? 'loading' : ''}`} 
+                disabled={selectedCountries.length === 0} 
+                onClick={onSaveCountries}
+            >
+                Save map
+            </button>
         </div>
     )
 };

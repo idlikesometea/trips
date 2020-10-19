@@ -1,5 +1,5 @@
 import React from 'react';
-import GoogleAuth from './GoogleAuth';
+import GoogleAuth from '../GoogleAuth';
 
 import { Redirect } from 'react-router-dom';
 

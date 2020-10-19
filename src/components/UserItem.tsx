@@ -19,6 +19,9 @@ class UserItem extends React.Component<Props> {
                         <Link to="/">Dashboard</Link>
                     </Dropdown.Item>
                     <Dropdown.Item>
+                        <Link to="/creator">My map</Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
                         <GoogleAuth />
                     </Dropdown.Item>
                 </Dropdown.Menu>

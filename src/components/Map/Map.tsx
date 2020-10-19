@@ -7,7 +7,6 @@ import TripsList from './TripsList';
 import './Map.css';
 import maps from '../../utils/maps';
 import Trip from '../../models/Trips.model';
-import { fetchCountries } from '../../actions';
 import api from '../../services/api';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || '';
@@ -30,7 +29,7 @@ const Map = ({ trip }: { trip:Trip }) => {
       zoom: 1.8
     }).on('load', () => {
       setLoadingCountries(true);
-      api.get(`trips/countries/${id}`)
+      api.get(`trips/map/${id}`)
         .then(response => {
           setLoadingCountries(false);
           setCountries(response.data);
@@ -81,6 +80,4 @@ const mapPropsToState = state => {
   };
 }
 
-export default connect(mapPropsToState, {
-  fetchCountries
-})(Map);
+export default connect(mapPropsToState)(Map);

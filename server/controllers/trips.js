@@ -27,9 +27,16 @@ exports.map = (req, res) => {
 
 exports.saveMap = (req, res) => {
     res.status(200).json({
-        ...req.body
+        id: Math.random()
     });
 };
+
+exports.userData = (req, res) => {
+    res.status(200).json({
+        map: Math.random(), // null when no map
+        trips: trips
+    });
+}
 
 exports.files = (req, res) => {
     const tripId = req.params.tripId;

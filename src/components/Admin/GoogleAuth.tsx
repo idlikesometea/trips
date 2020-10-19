@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { signIn, signOut } from '../../actions';
 import { User } from '../../models/Auth.model';
+import Loader from '../ui/Loader';
 
 interface Props {
     userLogged: boolean;
@@ -52,7 +53,7 @@ class GoogleAuth extends React.Component<Props> {
 
     renderAuthButton() {
         if (this.props.userLogged === null) {
-            return null;
+            return <Loader />;
         } else if (this.props.userLogged) {
             return (
                 <button className="ui tiny red google button" onClick={this.onSignOutClick}>

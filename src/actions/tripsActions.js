@@ -3,7 +3,7 @@ import api from "../services/api";
 export const fetchTrips = (userId) => async dispatch => {
     dispatch({type:'FETCH_TRIPS_LOAD'});
 
-    const response = await api.get(`/trips/${userId}`);
+    const response = await api.get(`/trips/list/`);
 
     dispatch({type:'FETCH_TRIPS', payload: response.data});
 }

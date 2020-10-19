@@ -16,7 +16,7 @@ const Header = ({auth}) => {
                 </Link>
             </Menu.Item>
             <Menu.Item position="right">
-                { auth.userLogged === false
+                { !auth.userLogged
                     ? <GoogleAuth />
                     : <UserItem /> 
                 }

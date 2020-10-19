@@ -21,7 +21,7 @@ export default () => {
         <Switch>
           <Route path="/" exact component={Dashboard}></Route>
           <Route path="/m/:id" component={Map}></Route>
-          <Route path="/creator/:id?" component={Creator}></Route>
+          <Route path="/creator" component={Creator}></Route>
           <Route component={NotFound}></Route>
         </Switch>
       </BrowserRouter>

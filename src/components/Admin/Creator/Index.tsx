@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { RouteProps } from 'react-router-dom';
 
 import { User } from '../../../models/Auth.model';
-import Trip from '../../../models/Trips.model';
 import api from '../../../services/api';
+import Loader from '../../ui/Loader';
+import GoogleAuth from '../GoogleAuth';
 import CountrySelector from './CountrySelector';
+import TripsList from './TripsList';
 
 interface Props {
     userLogged: boolean;
@@ -22,7 +23,7 @@ const initialState = {
     loading: false
 }
 
-class Creator extends React.Component<RouteProps & Props> {
+class Creator extends React.Component<Props> {
     state = {...initialState};
 
     async getUserData () {
@@ -55,10 +56,6 @@ class Creator extends React.Component<RouteProps & Props> {
 
     componentDidMount() {
         this.getCountryOptions();
-        if (this.props.match.params.id) {
-            this.setState({map: this.props.match.params.id});
-            this.getSelectedCountries();
-        }
     }
 
     componentDidUpdate() {
@@ -88,34 +85,41 @@ class Creator extends React.Component<RouteProps & Props> {
             .finally(() => this.setState({loading: false}));
     }
 
-    renderTripsList() {
-        const tripsList = this.state.trips.map((trip:Trip) => {
+    renderPlaceholder() {
+        if (this.props.userLogged === null) {
             return (
-                <div key={trip.id}>
-                    {trip.name}
+                <div className="ui segment">
+                    <Loader />
                 </div>
             );
-        })
-        return tripsList;
+        };
+
+        return (
+            <div className="ui placeholder segment">
+                <div className="ui icon header">
+                    <i className="plane icon"></i>
+                    Log in with Google and add your trips.
+                </div>
+                <GoogleAuth />
+            </div>
+        );
     }
 
     render() {
         return (
             <div className="ui container">
-                <div className="ui segment">
-                    <CountrySelector 
-                        countryOptions={this.state.countryOptions}
-                        selectedCountries={this.state.selectedCountries}
-                        onSelectCountries={this.onSelectCountries}
-                        onSaveCountries={this.onSaveCountries}
-                        loading={this.state.loading}
-                    />
-                </div>
+                <CountrySelector 
+                    countryOptions={this.state.countryOptions}
+                    selectedCountries={this.state.selectedCountries}
+                    onSelectCountries={this.onSelectCountries}
+                    onSaveCountries={this.onSaveCountries}
+                    loading={this.state.loading}
+                />
 
-                <div className="ui segment">
-                    <h2>Your trips</h2>
-                    {this.renderTripsList()}
-                </div>
+                {this.props.userLogged 
+                    ? <TripsList trips={this.state.trips}/>
+                    : this.renderPlaceholder()
+                }
             </div>
         );
     }

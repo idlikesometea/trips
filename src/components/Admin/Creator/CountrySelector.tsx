@@ -3,7 +3,7 @@ import { Dropdown } from 'semantic-ui-react';
 
 export default ({countryOptions, selectedCountries, onSelectCountries, onSaveCountries, loading}) => {
     return (
-        <div>
+        <div className="ui segment">
             <Dropdown
                 clearable
                 fluid

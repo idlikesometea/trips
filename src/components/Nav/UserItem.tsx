@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Dropdown } from 'semantic-ui-react';
 
-import GoogleAuth from './Admin/GoogleAuth';
-import { User } from '../models/Auth.model';
+import GoogleAuth from '../Admin/GoogleAuth';
+import { User } from '../../models/Auth.model';
 
 interface Props {
     user: User;

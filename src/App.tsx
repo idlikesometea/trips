@@ -2,12 +2,11 @@ import React from 'react';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import Header from './components/Header';
+import Header from './components/Nav/Header';
 import Dashboard from './components/Admin/Dashboard/Index';
 import Map from './components/Map/Map';
-import NotFound from './components/404';
+import NotFound from './components/Nav/404';
 import Creator from './components/Admin/Creator/Index';
-// import Message from './components/ui/Message';
 
 import './App.css';
 
@@ -25,7 +24,6 @@ export default () => {
           <Route component={NotFound}></Route>
         </Switch>
       </BrowserRouter>
-      {/* <Message /> */}
     </div>
   );
 }

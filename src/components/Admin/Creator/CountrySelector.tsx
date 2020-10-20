@@ -1,9 +1,11 @@
 import React from 'react';
 import { Dropdown } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
-export default ({countryOptions, selectedCountries, onSelectCountries, onSaveCountries, loading}) => {
+export default ({countryOptions, selectedCountries, onSelectCountries, onSaveCountries, map, loading}) => {
     return (
         <div className="ui segment">
+            <h2>Add countries to your map</h2>
             <Dropdown
                 clearable
                 fluid
@@ -24,6 +26,11 @@ export default ({countryOptions, selectedCountries, onSelectCountries, onSaveCou
             >
                 Save map
             </button>
+
+            { map
+                ? <Link to={`/m/${map}`} basename="/" className="ui button green" style={{float:'right'}}>See map</Link>
+                : null
+            }
         </div>
     )
 };

@@ -1,7 +1,7 @@
 exports.trips = [
-    { id: 1, name: 'Las Vegas 2018', folderId: '1roVvu5crNM6Lfij2TV_y1j4qCZ5ZRAsw'},
-    { id: 2, name: 'Cuba 2017', folderId: '1roVvu5crNM6Lfij2TV_y1j4qCZ5ZRAsw' },
-    { id: 3, name: 'Italia 2017', folderId: '1roVvu5crNM6Lfij2TV_y1j4qCZ5ZRAsw' }
+    { id: 1, name: 'Las Vegas 2018', folderId: '1roVvu5crNM6Lfij2TV_y1j4qCZ5ZRAsw', startDate:'2018-10-28', endDate:'2018-11-01'},
+    { id: 2, name: 'Cuba 2017', folderId: '1roVvu5crNM6Lfij2TV_y1j4qCZ5ZRAsw', startDate:'2017-09-18', endDate:'2017-09-23'},
+    { id: 3, name: 'Italia 2017', folderId: '1roVvu5crNM6Lfij2TV_y1j4qCZ5ZRAsw', startDate:'2017-11-09', endDate:'2017-11-21'}
 ];
 
 exports.userCountries = [

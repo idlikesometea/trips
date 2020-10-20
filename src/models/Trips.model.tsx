@@ -1,8 +1,10 @@
-export default interface Trip {
-    id?: number;
+export interface Trip {
+    id?: any;
     name?: string;
-    files: File[]
-}
+    files: File[];
+    startDate?: string;
+    endDate?: string;
+};
 
 export interface File {
     id: string;
@@ -10,4 +12,12 @@ export interface File {
     webViewLink: string;
     location?: Coordinates;
     time: string;
-}
+};
+
+export const TripMock:Trip = {
+    id: null,
+    name: '',
+    files: [],
+    startDate: '2010-01-01',
+    endDate: ''
+};

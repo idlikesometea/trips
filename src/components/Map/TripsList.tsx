@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 
-import Trip from '../../models/Trips.model';
+import { Trip } from '../../models/Trips.model';
 import { fetchTrips, selectTrip, resetTrip } from '../../actions';
 import './TripsList.css';
 import Loader from '../ui/Loader';

@@ -16,7 +16,11 @@ exports.countries = (req, res) => {
 };
 
 exports.list = (req, res) => {
-    const userId = req.params.userId;
+    const tripId = req.params.id;
+    if (tripId) {
+        const trip = trips.find(trip => trip.id == tripId);
+        return res.status(200).json(trip);
+    }
     res.status(200).json(trips);
 };
 

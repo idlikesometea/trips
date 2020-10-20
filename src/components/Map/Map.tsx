@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import TripsList from './TripsList';
 import './Map.css';
 import maps from '../../utils/maps';
-import Trip from '../../models/Trips.model';
+import { Trip } from '../../models/Trips.model';
 import api from '../../services/api';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || '';

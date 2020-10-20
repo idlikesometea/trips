@@ -53,10 +53,12 @@ class Dashboard extends Component<Props> {
             if (this.state.hasMap) {
                 return (
                     <div className="ui segment">
+                        <h1>Welcome {this.props.user.givenName}!</h1>
+                        <img alt="User profile avatar" className="ui avatar tiny image" src={this.props.user.imageUrl} />
                         <h2>You have created a map</h2>
                         <Link className="ui button primary" to="creator/">Update your map</Link>
 
-                        <Link className="ui button success" to="m/3f4sdf4234234">See your map</Link>
+                        <Link className="ui button green" style={{float:'right'}} to="m/3f4sdf4234234">See your map</Link>
                     </div>
                 )
             } else {

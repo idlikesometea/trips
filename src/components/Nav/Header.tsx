@@ -5,7 +5,7 @@ import { Menu } from 'semantic-ui-react';
 
 import './Header.css';
 import UserItem from './UserItem';
-import GoogleAuth from './Admin/GoogleAuth';
+import GoogleAuth from '../Admin/GoogleAuth';
 
 const Header = ({auth}) => {
     return (

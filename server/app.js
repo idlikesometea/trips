@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 app.use(configController.setHeaders);
 
 app.use('/trips', tripsRoutes);
+
 app.use(errorController.get404);
 
 app.listen(8000);

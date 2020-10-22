@@ -5,7 +5,7 @@ import { Folder } from '../../../models/Trips.model';
 export default ({folders, onFolderClick, activeFolder}: {folders:Folder[], onFolderClick, activeFolder:any}) => {
 
     const foldersList = folders.map(folder => {
-        const className = `ui medium button ${folder.id === activeFolder ? 'green' : ''}`;
+        const className = `ui medium button ${folder.id === activeFolder ? 'blue' : ''}`;
         return (
             <div key={folder.id} className="four wide column">
                 <button 

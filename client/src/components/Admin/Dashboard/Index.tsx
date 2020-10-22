@@ -8,7 +8,6 @@ import Loader from '../../ui/Loader';
 import Login from './Login';
 import Placeholder from './Placeholder';
 
-
 interface Props {
     userLogged: boolean;
     user: User
@@ -26,7 +25,7 @@ class Dashboard extends Component<Props> {
     async fetchUserData() {
         console.log('::Dashboard:fetching > userData');
         this.setState({hasMap: false});
-        const response = await api.get(`trips/user/${this.props.user.id}`);
+        const response = await api.get(`user/${this.props.user.id}`);
         this.setState({map: response.data.map, trips: response.data.trips, hasMap:true});
     }
 

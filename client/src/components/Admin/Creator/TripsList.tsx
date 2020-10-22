@@ -8,7 +8,7 @@ export default ({trips}: {trips:Trip[]}) => {
         return (
             <div key={trip.id} className="item">
                 <div className="right floated content">
-                    <Link to={`creator/trip/${trip.id}`} className="ui icon circular button">
+                    <Link to={`${window.location.pathname}trip/${trip.id}`} className="ui icon circular button">
                         <i className="icon settings"></i>
                     </Link>
                 </div>
@@ -30,7 +30,7 @@ export default ({trips}: {trips:Trip[]}) => {
                 : <h1>You don't have any trips yet</h1>
             }
 
-            <Link to="creator/trip" className="ui button primary">Add a trip</Link>
+            <Link to={`${window.location.pathname}trip`} className="ui button primary">Add a trip</Link>
         </div>
     );
 };

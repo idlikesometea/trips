@@ -29,7 +29,7 @@ class Creator extends React.Component<Props> {
     async getUserData () {
         this.setState({userHasMap:false});
         console.log('::Creator:fetching > userData');
-        await api.get(`trips/user/${this.props.user.id}`)
+        await api.get(`user/${this.props.user.id}`)
             .then(({data}) => {
                 this.setState({
                     userHasMap: data.map || false,
@@ -43,13 +43,13 @@ class Creator extends React.Component<Props> {
     }
 
     async getCountryOptions () {
-        const response = await api.get('trips/countries');
+        const response = await api.get('countries');
         console.log('::Creator:fetching > countryOptions');
         this.setState({countryOptions: response.data});
     }
     
     async getSelectedCountries () {
-        const response = await api.get(`trips/map/${this.state.map}`);
+        const response = await api.get(`map/${this.state.map}`);
         console.log('::Creator:fetching > selectedCountries');
         this.setState({selectedCountries: response.data});        
     }
@@ -78,7 +78,7 @@ class Creator extends React.Component<Props> {
     onSaveCountries = () => {
         console.log('::Creator:saving > countries')
         this.setState({loading: true});
-        api.post('trips/map', {countries: this.state.selectedCountries})
+        api.post('map', {countries: this.state.selectedCountries})
             .then(({data}) => {
                 this.setState({map: data.id});
             })

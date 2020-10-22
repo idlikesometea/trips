@@ -29,7 +29,7 @@ const Map = ({ trip }: { trip:Trip }) => {
       zoom: 1.8
     }).on('load', () => {
       setLoadingCountries(true);
-      api.get(`trips/map/${id}`)
+      api.get(`/map/${id}`)
         .then(response => {
           setLoadingCountries(false);
           setCountries(response.data);

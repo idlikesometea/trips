@@ -1,54 +1,35 @@
-const {trips, countries, userCountries} = require('../utils/database');
 const googleDrive = require('../apis/googleDrive');
 
-exports.countries = (req, res) => {
-    const noFlag = ['aq', 'bq', 'cw', 'gg', 'im', 'je', 'bl', 'mf', 'sx', 'ss'];
-    const countryOptions = countries.map(country => {
-        const flag = !noFlag.includes(country["alpha-2"].toLowerCase()) ? country["alpha-2"].toLowerCase() : '';
-        return {
-            key: country["country-code"],
-            value: country["alpha-3"],
-            flag,
-            text: country.name
-        };
-    });
-    res.status(200).json(countryOptions);
+const mocks = require('../utils/mocks');
+
+
+exports.folders = (req, res) => {
+    // googleDrive.get('/files', {
+    //     params: {
+    //         q: "mimeType = 'application/vnd.google-apps.folder'"
+    //     }
+    // }).then(response => {
+    //     console.log(response.data);
+    // })
+    // .catch(({response}) => {
+    //     console.log(response);
+    // })
+    res.status(200).json(mocks.folders.files);
 };
-
-exports.getTrips = (req, res) => {
-    const tripId = req.params.id;
-    let data = trips;
-    if (tripId) {
-        data = trips.find(trip => trip.id == tripId);
-    }
-    res.status(200).json(data);
-};
-
-exports.saveTrip = (req, res) => {
-    const trip = req.body;
-    res.status(201).json(trip);
-};
-
-exports.map = (req, res) => {
-    const mapId = req.params.mapId;
-    res.status(200).json(userCountries);
-};
-
-exports.saveMap = (req, res) => {
-    res.status(200).json({
-        id: Math.random()
-    });
-};
-
-exports.userData = (req, res) => {
-    res.status(200).json({
-        map: Math.random(), // null when no map
-        trips: trips
-    });
-}
-
 
 exports.files = (req, res) => {
+    const folderId = req.params.id;
+    googleDrive.get('/files?q="' + folderId +'"+in+parents')
+        .then(response => {
+            res.status(200).json(response.data.files);
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        });
+} 
+
+
+exports._files = (req, res) => {
     const tripId = req.params.tripId;
     const trip = trips.find(trip => trip.id == tripId);
     googleDrive.get('/files?q="' + trip.folderId +'"+in+parents')

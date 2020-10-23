@@ -1,0 +1,47 @@
+div.files-container {
+    max-height: 600px;
+    overflow-y: scroll;
+    margin-bottom: 3em !important;
+}
+
+div.files-container .image{
+    display: flex !important;
+    justify-content: center;
+    cursor: pointer;
+}
+
+div.files-container .image:hover { filter: brightness(50%); }
+
+div.files-container .image img {
+    height: 170px;
+    max-width: 100%;
+}
+
+div.files-container .image .checkbox{
+    position: absolute;
+    top: 1.5em;
+    right: 1.5em;
+}
+
+div.files-container .image input[type=checkbox] {
+    width: 1.3em;
+    height: 1.3em;
+}
+
+div.files-container .image .video-element{
+    position: absolute;
+    width: 4em;
+    height: 4em;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.6);
+    color: #625b5b;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div.files-container .image .video-element i {
+    margin: 0
+}

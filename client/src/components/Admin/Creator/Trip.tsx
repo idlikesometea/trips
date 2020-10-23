@@ -10,6 +10,7 @@ import TripInformation from './TripInformation';
 interface stateInterface {
     id: any;
     trip: ITrip;
+    tripFiles: File[];
     folders: Folder[];
     loading:boolean;
     folderFiles: any;
@@ -19,6 +20,7 @@ interface stateInterface {
 const initialState:stateInterface = {
     id: null,
     trip: TripMock,
+    tripFiles: [],
     folders: [],
     folderFiles: [],
     loading: false,
@@ -38,6 +40,12 @@ class Trip extends React.Component<RouteProps> {
         const response = await api.get('folders/');
 
         this.setState({folders: response.data});
+    }
+
+    async fetchFile(fileId) {
+        const response = await api.get(`file/${fileId}`);
+
+        console.log(response.data);
     }
 
     onChangeHandle = ({name, value}) => this.setState({trip: {...this.state.trip, [name]:value}});
@@ -65,8 +73,11 @@ class Trip extends React.Component<RouteProps> {
             })
             .catch(err => {
                 this.setState({activeFolder: null});
-                console.log(err);
             });
+    }
+
+    onFileClick = (fileId) => {
+        this.fetchFile(fileId);
     }
 
     componentDidMount() {
@@ -91,6 +102,10 @@ class Trip extends React.Component<RouteProps> {
                     loading={this.state.loading}
                 />
 
+                <div className="ui segment">
+                    Trip Files
+                </div>
+
                 <Folders
                     folders={this.state.folders}
                     activeFolder={this.state.activeFolder}
@@ -98,7 +113,10 @@ class Trip extends React.Component<RouteProps> {
                 />
 
                 { this.state.activeFolder
-                    ? <Files files={this.state.folderFiles} />
+                    ? <Files 
+                        files={this.state.folderFiles} 
+                        onFileClick={this.onFileClick}
+                    />
                     : null
                 }
             </div>

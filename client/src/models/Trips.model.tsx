@@ -12,7 +12,8 @@ export interface File {
     fileExtension: string;
     webViewLink: string;
     location?: Coordinates;
-    time: string;
+    time?: string;
+    mimeType?: string;
 };
 
 export interface Folder {

@@ -28,6 +28,29 @@ exports.files = (req, res) => {
         });
 } 
 
+exports.file = (req, res) => {
+    const fileId = req.params.id;
+    const properties = ['id', 'fileExtension', 'webViewLink', 'imageMediaMetadata'];
+    googleDrive.get(`/files/${fileId}`, { params: { fields: properties.join(',') } })
+        .then(({data}) => {
+            let fileData = { 
+                id: data.id,
+                fileExtension: data.fileExtension,
+                webViewLink: data.webViewLink 
+            };
+
+            if (data.imageMediaMetadata) {
+                fileData = {
+                    ...fileData,
+                    location: data.imageMediaMetadata.location,
+                    time: data.imageMediaMetadata.time
+                };
+            }
+            res.status(200).json(fileData);
+        })
+        .catch(err => res.status(500).json(err))
+}
+
 
 exports._files = (req, res) => {
     const tripId = req.params.tripId;

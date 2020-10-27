@@ -71,7 +71,7 @@ const Map = ({ trip }: { trip:Trip }) => {
 
   return (
     <div className="appContainer">
-      <TripsList />
+      {id === 'example' ? null : <TripsList />}
       {loadingCountries ? <div className="loading-alert">Loading countries</div> : null}
       <div ref={mapRef} id="mapContainer" className="mapContainer"></div>
     </div>

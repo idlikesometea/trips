@@ -1,7 +1,7 @@
 const googleDrive = require('../apis/googleDrive');
 
 const mocks = require('../utils/mocks');
-
+const { trips } = require('../utils/database');
 
 exports.folders = (req, res) => {
     // googleDrive.get('/files', {

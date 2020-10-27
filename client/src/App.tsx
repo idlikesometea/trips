@@ -14,16 +14,14 @@ import './App.css';
 export default () => {
 
   return (
-    <div>
-      <BrowserRouter>
-        <Header />
-        <Switch>
-          <Route path="/" exact component={Dashboard}></Route>
-          <Route path="/m/:id" component={Map}></Route>
-          <Route path="/creator" component={Creator}></Route>
-          <Route component={NotFound}></Route>
-        </Switch>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Header />
+      <Switch>
+        <Route path="/" exact component={Dashboard}></Route>
+        <Route path="/m/:id" component={Map}></Route>
+        <Route path="/creator" component={Creator}></Route>
+        <Route component={NotFound}></Route>
+      </Switch>
+    </BrowserRouter>
   );
 }

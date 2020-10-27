@@ -18,7 +18,7 @@ const Map = ({ trip }: { trip:Trip }) => {
   let activeTrip = useRef<boolean>(false);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [ countries, setCountries ] = useState([]);
+  const [ countries, setCountries ] = useState<string[]>([]);
   const [ loadingCountries, setLoadingCountries ] = useState<boolean>(false);
 
   useEffect(() => {
@@ -28,13 +28,17 @@ const Map = ({ trip }: { trip:Trip }) => {
       center: [-50, 40],
       zoom: 1.8
     }).on('load', () => {
-      setLoadingCountries(true);
-      api.get(`/map/${id}`)
+      if (id === 'example') {
+        setCountries(["BRA", "GRC", "JPN", "AUS", "TUR", "BGR", "ZAF", "CRI", "PRT", "VNM", "MAR", "NOR"]);
+      } else {
+        setLoadingCountries(true);
+        api.get(`/map/${id}`)
         .then(response => {
           setLoadingCountries(false);
           setCountries(response.data);
         })
         .catch(err => setLoadingCountries(false));
+      }
     });
   }, [dispatch, id]);
 
@@ -60,7 +64,7 @@ const Map = ({ trip }: { trip:Trip }) => {
       map.current.setLayoutProperty('countries', 'visibility', 'visible');
       map.current.flyTo({
         center: [-50,40],
-        zoom: 2
+        zoom: 1
       });
     }
   }, [trip]);

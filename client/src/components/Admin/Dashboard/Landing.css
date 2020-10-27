@@ -1,0 +1,12 @@
+div.landing div.ui.text.container {
+    margin-bottom: 4.5em;
+}
+
+div.landing img.rounded:hover {
+    filter: brightness(50%);
+    cursor: pointer;
+}
+
+div.showcase div.row{
+    margin: 3em 0;
+}

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { User } from '../../../models/Auth.model';
 import api from '../../../services/api';
 import Loader from '../../ui/Loader';
-import Login from './Login';
+import Landing from './Landing';
 import Placeholder from './Placeholder';
 
 interface Props {
@@ -42,12 +42,6 @@ class Dashboard extends Component<Props> {
     }
 
     renderDashboard() {
-        if (this.props.userLogged === null) {
-            return <Loader />;
-        } else if (!this.props.userLogged) {
-            return <Login />;
-        }
-
         if (this.props.userLogged) {
             if (this.state.hasMap) {
                 return (
@@ -68,6 +62,12 @@ class Dashboard extends Component<Props> {
     }
 
     render() {
+        if (this.props.userLogged === null) {
+            return <Loader />;
+        } else if (!this.props.userLogged) {
+            return <Landing />;
+        }
+
         return <div className="ui container">{ this.renderDashboard() }</div>
     }
 }

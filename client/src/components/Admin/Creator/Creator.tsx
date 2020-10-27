@@ -73,7 +73,7 @@ class Creator extends React.Component<Props> {
         }
     }
 
-    onSelectCountries = selectedCountries => this.setState({selectedCountries: selectedCountries});
+    onSelectCountries = selectedCountries => {console.log(selectedCountries); this.setState({selectedCountries: selectedCountries})};
     
     onSaveCountries = () => {
         console.log('::Creator:saving > countries')

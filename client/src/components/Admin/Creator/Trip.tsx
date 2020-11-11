@@ -62,7 +62,7 @@ class Trip extends React.Component<RouteProps> {
     }
 
     onFolderClick = folderId => {
-        this.setState({activeFolder: folderId});
+        this.setState({activeFolder: folderId, folderFiles: []});
         api.get(`folders/${folderId}`)
             .then(response => {
                 this.setState({folderFiles: response.data});
@@ -72,7 +72,7 @@ class Trip extends React.Component<RouteProps> {
                 }
             })
             .catch(err => {
-                this.setState({activeFolder: null});
+                this.setState({activeFolder: null, folderFiles: []});
             });
     }
 

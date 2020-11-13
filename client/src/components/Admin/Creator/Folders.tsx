@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Folder } from '../../../models/Trips.model';
+import { GoogleDriveFile } from '../../../models/Trips.model';
 
-export default ({folders, onFolderClick, activeFolder}: {folders:Folder[], onFolderClick, activeFolder:any}) => {
+export default ({folders, onFolderClick, activeFolder}: {folders:GoogleDriveFile[], onFolderClick, activeFolder:any}) => {
 
     const foldersList = folders.map(folder => {
         const className = `ui medium button ${folder.id === activeFolder ? 'green' : ''}`;
@@ -21,7 +21,7 @@ export default ({folders, onFolderClick, activeFolder}: {folders:Folder[], onFol
 
     return (
         <div className="ui segment">
-            <h2>Your folders</h2>
+            <h3>Your folders</h3>
             <div className="ui grid container">
                 { foldersList }
             </div>

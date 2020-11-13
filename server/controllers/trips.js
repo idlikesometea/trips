@@ -1,4 +1,5 @@
-const {trips, countries, userCountries} = require('../utils/database');
+const {trips, tripFiles, userCountries} = require('../utils/database');
+const countries = require('../utils/countries');
 const googleDrive = require('../apis/googleDrive');
 
 exports.countries = (req, res) => {
@@ -20,6 +21,7 @@ exports.getTrips = (req, res) => {
     let data = trips;
     if (tripId) {
         data = trips.find(trip => trip.id == tripId);
+        data.files = tripFiles;
     }
     res.status(200).json(data);
 };

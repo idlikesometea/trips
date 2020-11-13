@@ -1,15 +1,20 @@
 import React from 'react';
 
-import { File } from '../../../models/Trips.model';
-import './Files.css';
+import { FileMetadata, GoogleDriveFile } from '../../../models/Trips.model';
+import './FolderFiles.css';
 
-export default ({files, onFileClick}: {files:File[], onFileClick}) => {
+export default ({files, onFileClick, tripFiles}: {files:GoogleDriveFile[], onFileClick, tripFiles:FileMetadata[]}) => {
     const loading = files.length === 0;
 
     const onFileClickHandle = fileId => {
-        onFileClick(fileId);
         const checkbox: HTMLInputElement = document.getElementById(`fileSelect-${fileId}`) as HTMLInputElement;
         checkbox.checked = !checkbox.checked;
+        onFileClick(fileId, checkbox.checked);
+    }
+
+    const isChecked = fileId => {
+        const trip = tripFiles.find(trip => trip.id === fileId);
+        return trip ? true : false
     }
 
     const filesGrid = files.map(file => {
@@ -19,7 +24,7 @@ export default ({files, onFileClick}: {files:File[], onFileClick}) => {
                     <input 
                         type="checkbox" 
                         id={`fileSelect-${file.id}`} 
-                        checked={false} 
+                        checked={isChecked(file.id)} 
                         name="fileSelect" 
                         readOnly
                         onClick={e => e.preventDefault()}

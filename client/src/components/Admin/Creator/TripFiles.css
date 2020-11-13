@@ -1,0 +1,12 @@
+div.trip-files{
+    display: flex;
+    overflow-x: auto;
+}
+
+div.trip-files .file{
+    margin-right: 1em;
+}
+
+div.trip-files img {
+    height: 100px;
+}

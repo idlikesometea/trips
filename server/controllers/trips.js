@@ -1,5 +1,5 @@
 const {trips, tripFiles, userCountries} = require('../utils/database');
-const countries = require('../utils/countries');
+const { countries } = require('../utils/countries');
 const googleDrive = require('../apis/googleDrive');
 
 exports.countries = (req, res) => {

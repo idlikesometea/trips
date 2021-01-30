@@ -16,6 +16,7 @@ interface stateInterface {
     loading:boolean;
     folderFiles: GoogleDriveFile[];
     activeFolder:any;
+    showError:boolean;
 }
 
 const initialState:stateInterface = {
@@ -25,7 +26,8 @@ const initialState:stateInterface = {
     folders: [],
     folderFiles: [],
     loading: false,
-    activeFolder: null
+    activeFolder: null,
+    showError: false
 };
 
 class Trip extends React.Component<RouteProps> {
@@ -74,9 +76,9 @@ class Trip extends React.Component<RouteProps> {
         this.setState({activeFolder: folderId, folderFiles: []});
         api.get(`folders/${folderId}`)
             .then(response => {
-                this.setState({folderFiles: response.data});
+                this.setState({folderFiles: response.data, showError: false});
                 if (!response.data.length) {
-                    this.setState({activeFolder: null});
+                    this.setState({activeFolder: null, showError: true});
                     console.log('no files!');
                 }
             })
@@ -100,6 +102,18 @@ class Trip extends React.Component<RouteProps> {
         }
 
         this.fetchFolders();
+    }
+
+    renderAlert() {
+        return this.state.showError ? (
+            <div className="ui warning message">
+                <i className="close icon" onClick={() => this.setState({showError: false})}></i>
+                <div className="header">
+                    We're sorry, you don't have any files in this folder!
+                </div>
+                <p>Try with another one or add files to your folder on your Google Drive.</p>
+            </div>
+        ) : null;
     }
 
     render() {
@@ -132,7 +146,7 @@ class Trip extends React.Component<RouteProps> {
                         tripFiles={this.state.tripFiles}
                         onFileClick={this.onFileClick}
                     />
-                    : null
+                    : this.renderAlert()
                 }
             </div>
         )

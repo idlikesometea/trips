@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import { connect, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import TripsList from './TripsList';
+import TripsList from './TripsSelector';
 import './Map.css';
 import maps from '../../utils/maps';
 import { Trip } from '../../models/Trips.model';

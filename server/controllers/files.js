@@ -20,8 +20,12 @@ exports.folders = (req, res) => {
 exports.files = (req, res) => {
     const folderId = req.params.id;
     googleDrive.get('/files?q="' + folderId +'"+in+parents')
-        .then(response => {
-            res.status(200).json(response.data.files);
+        .then(({data}) => {
+            if (data.files.length) {
+                res.status(200).json(data.files);
+            } else {
+                res.status(404).send('No files found for this folder.');
+            }
         })
         .catch(err => {
             res.status(500).json(err);

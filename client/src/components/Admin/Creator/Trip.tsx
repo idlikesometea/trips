@@ -17,6 +17,7 @@ interface stateInterface {
     folderFiles: GoogleDriveFile[];
     activeFolder:any;
     showError:boolean;
+    errorMessage?:string;
 }
 
 const initialState:stateInterface = {
@@ -65,10 +66,11 @@ class Trip extends React.Component<RouteProps> {
         event.preventDefault();
         this.setState({loading: true});
         api.post('trips/', {...this.state.trip})
-            .then(response => {
-                console.log(response.data);
+            .then(() => {
+                console.log(':::saving trip');
+                setTimeout(() => this.props.history.push('/creator/'), 100);
             })
-            .catch(err => console.log(err))
+            .catch(({response}) => this.showAlert(response.data))
             .finally(() => this.setState({loading: false}));
     }
 
@@ -77,12 +79,9 @@ class Trip extends React.Component<RouteProps> {
         api.get(`folders/${folderId}`)
             .then(response => {
                 this.setState({folderFiles: response.data, showError: false});
-                if (!response.data.length) {
-                    this.setState({activeFolder: null, showError: true});
-                    console.log('no files!');
-                }
             })
-            .catch(err => {
+            .catch(({response}) => {
+                this.showAlert(response.data);
                 this.setState({activeFolder: null, folderFiles: []});
             });
     }
@@ -104,14 +103,29 @@ class Trip extends React.Component<RouteProps> {
         this.fetchFolders();
     }
 
+    showAlert(msg?) {
+        this.setState({
+            showError: true,
+            errorMessage: msg || 'Sorry, there was an error'
+        });
+
+        setTimeout(() => this.hideAlert(), 3000);
+    }
+
+    hideAlert() {
+        this.setState({
+            showError: false,
+            errorMessage: ''
+        });
+    }
+
     renderAlert() {
         return this.state.showError ? (
             <div className="ui warning message">
                 <i className="close icon" onClick={() => this.setState({showError: false})}></i>
                 <div className="header">
-                    We're sorry, you don't have any files in this folder!
+                    { this.state.errorMessage }
                 </div>
-                <p>Try with another one or add files to your folder on your Google Drive.</p>
             </div>
         ) : null;
     }
@@ -119,6 +133,8 @@ class Trip extends React.Component<RouteProps> {
     render() {
         return (
             <div className="ui container">
+                { this.renderAlert() }
+
                 <div className="ui header">
                     <h2>{ this.state.id ? this.state.trip.name : 'Create a new trip'}</h2>
                 </div>
@@ -146,7 +162,7 @@ class Trip extends React.Component<RouteProps> {
                         tripFiles={this.state.tripFiles}
                         onFileClick={this.onFileClick}
                     />
-                    : this.renderAlert()
+                    : null
                 }
             </div>
         )

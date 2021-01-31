@@ -17,6 +17,12 @@ export default ({files, onFileClick, tripFiles}: {files:GoogleDriveFile[], onFil
         return trip ? true : false
     }
 
+    const renderVideoIcon = (fileType) => {
+        return fileType === 'video/mp4' ? (
+            <div className="video-element"><i className="ui icon play" /></div>
+        ) : null;
+    }
+
     const filesGrid = files.map(file => {
         return (
             <div key={file.id} className="four wide column image" onClick={() => onFileClickHandle(file.id)}>
@@ -28,11 +34,10 @@ export default ({files, onFileClick, tripFiles}: {files:GoogleDriveFile[], onFil
                         name="fileSelect" 
                         readOnly
                         onClick={e => e.preventDefault()}
-                    />
+                        />
                 </div>
                 <img alt="Google drive folder file" src={`https://drive.google.com/thumbnail?id=${file.id}`}/>
-
-                { file.mimeType === 'video/mp4' ?  <div className="video-element"><i className="ui icon play" /></div> : null }
+                { renderVideoIcon(file.mimeType) }
             </div>
         );
     });

@@ -10,10 +10,10 @@ div.files-container .image{
     cursor: pointer;
 }
 
-div.files-container .image:hover { filter: brightness(50%); }
+div.files-container .image img:hover { filter: brightness(50%); }
 
 div.files-container .image img {
-    height: 170px;
+    max-height: 170px;
     max-width: 100%;
 }
 
@@ -21,6 +21,7 @@ div.files-container .image .checkbox{
     position: absolute;
     top: 1.5em;
     right: 1.5em;
+    z-index: 1;
 }
 
 div.files-container .image input[type=checkbox] {

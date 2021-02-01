@@ -9,16 +9,12 @@ const request = axios.create({
     }
 });
 
-const getFolders = () => request.get('/files', {
-        params: {
-            q: "mimeType='application/vnd.google-apps.folder'"
-        },
-        headers: {
-            authorizarion: localStorage.getItem('authed')
-        }
-    }).then(response => {
-        console.log(response.data);
-    })
+const getFolders = () => {
+    return window.gapi.client.load('drive', 'v3')
+        .then(() => window.gapi.client.init({})
+        .then(() => window.gapi.client.drive.files.list({ q: "mimeType='application/vnd.google-apps.folder'"}))
+        .then(({result}) => result.files));
+}
 
 const getFolderFiles = folderId => request.get('/files?q="' + folderId +'"+in+parents')
     .then(({data}) => {

@@ -39,7 +39,7 @@ export default ({tripInfo, onSaveClick, onChangeHandle, loading}: TripInformatio
                     </div>
                 </div>
 
-                <button className="ui button primary" onClick={onSaveClick}>Save trip information</button>
+                <button style={{margin:'1em 0'}} className="ui button primary" onClick={onSaveClick}>Save trip information</button>
             </form>
         </div>
     );

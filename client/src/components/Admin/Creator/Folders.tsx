@@ -29,7 +29,7 @@ export default ({folders, onFolderClick, activeFolder, onFetchFolders}: componen
     return (
         <div className="ui segment">
             <h3>Your folders</h3>
-            <div className="ui grid container" style={{padding:'2em'}}>
+            <div className="ui grid container" style={{padding:'2em 0'}}>
                 { foldersList.length ? 
                     foldersList 
                     : <button className="ui blue button" onClick={() => onFetchFolders()}>Fetch your folders from Google Drive</button>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { RouteProps } from 'react-router-dom';
 
+import googleDrive from '../../../services/googleDrive';
 import api from '../../../services/api';
 import { Trip as ITrip, TripMock, GoogleDriveFile, FileMetadata} from '../../../models/Trips.model';
 import Folders from './Folders';
@@ -48,16 +49,17 @@ class Trip extends React.Component<RouteProps> {
         });
     }
 
-    async fetchFolders() {
-        const response = await api.get('folders/');
-
-        this.setState({folders: response.data});
+    fetchFolders = () => {
+        console.log(':: fetching folder');
+        googleDrive.getFolders()
+            .then(folders => this.setState({folders}))
+            .catch(({message}) => this.showAlert(message))
     }
 
-    async fetchFile(fileId) {
-        const response = await api.get(`file/${fileId}`);
-
-        this.setState({tripFiles: [...this.state.tripFiles, response.data]});
+    fetchFile(fileId) {
+        googleDrive.getFile(fileId)
+            .then(file => this.setState({tripFiles: [...this.state.tripFiles, file]}))
+            .catch(({message}) => this.showAlert(message))
     }
 
     onChangeHandle = ({name, value}) => this.setState({trip: {...this.state.trip, [name]:value}});
@@ -75,18 +77,19 @@ class Trip extends React.Component<RouteProps> {
     }
 
     onFolderClick = folderId => {
+        if (this.state.activeFolder === folderId) return;
         this.setState({activeFolder: folderId, folderFiles: []});
-        api.get(`folders/${folderId}`)
-            .then(response => {
-                this.setState({folderFiles: response.data, showError: false});
-            })
-            .catch(({response}) => {
-                this.showAlert(response.data);
+
+        googleDrive.getFolderFiles(folderId)
+            .then(folderFiles => this.setState({folderFiles}) )
+            .catch(({message}) => {
+                this.showAlert(message);
                 this.setState({activeFolder: null, folderFiles: []});
-            });
+            })
     }
 
     onFileClick = (fileId, fetch) => {
+        console.log(fileId, fetch);
         if (fetch) {
             this.fetchFile(fileId);
         } else {
@@ -99,8 +102,6 @@ class Trip extends React.Component<RouteProps> {
         if (this.state.id) {
             this.fetchTrip();
         }
-
-        this.fetchFolders();
     }
 
     showAlert(msg?) {
@@ -122,7 +123,7 @@ class Trip extends React.Component<RouteProps> {
     renderAlert() {
         return this.state.showError ? (
             <div className="ui warning message">
-                <i className="close icon" onClick={() => this.setState({showError: false})}></i>
+                <i className="close icon" onClick={() => this.hideAlert()}></i>
                 <div className="header">
                     { this.state.errorMessage }
                 </div>
@@ -151,6 +152,7 @@ class Trip extends React.Component<RouteProps> {
                 />
 
                 <Folders
+                    onFetchFolders={this.fetchFolders}
                     folders={this.state.folders}
                     activeFolder={this.state.activeFolder}
                     onFolderClick={this.onFolderClick}

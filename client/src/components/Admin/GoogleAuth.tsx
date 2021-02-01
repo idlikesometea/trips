@@ -19,7 +19,7 @@ class GoogleAuth extends React.Component<Props> {
         window.gapi.load('client:auth2', () => {
             window.gapi.client.init({
                 clientId: process.env.REACT_APP_GAPI_CLIENT_ID,
-                scope: 'email'
+                scope: 'email https://www.googleapis.com/auth/drive.readonly'
             })
             .then(() => {
                 this.auth = window.gapi.auth2.getAuthInstance();
@@ -36,11 +36,15 @@ class GoogleAuth extends React.Component<Props> {
                 givenName: this.auth.currentUser.get().getBasicProfile().getGivenName(),
                 familyName: this.auth.currentUser.get().getBasicProfile().getFamilyName(),
                 imageUrl: this.auth.currentUser.get().getBasicProfile().getImageUrl(),
-                email: this.auth.currentUser.get().getBasicProfile().getEmail() 
+                email: this.auth.currentUser.get().getBasicProfile().getEmail()
             };
+            const accessToken = `Bearer ${this.auth.currentUser.get().getAuthResponse().access_token}`;
+            localStorage.setItem('authed', accessToken);
             this.props.signIn(user);
-        } else 
+        } else {
+            localStorage.removeItem('authed');
             this.props.signOut();
+        }
     }
 
     onSignInClick = () => {

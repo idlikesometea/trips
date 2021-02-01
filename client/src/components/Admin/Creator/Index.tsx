@@ -11,7 +11,10 @@ class Index extends React.Component<RouteProps> {
         return (
             <div>
                 <Route exact path={this.props.match.path} component={Creator} />
-                <GuardedRoute auth={this.props.userLogged} path={`${this.props.match.path}/trip/:id?`} component={Trip} />
+                <GuardedRoute 
+                    path={`${this.props.match.path}/trip/:id?`} 
+                    auth={this.props.userLogged}
+                    component={Trip} />
             </div>
         );
     }
@@ -19,8 +22,7 @@ class Index extends React.Component<RouteProps> {
 
 const mapStateToProps = (state) => {
     return {
-        userLogged: state.auth.userLogged,
-        user: state.auth.user
+        userLogged: state.auth.userLogged
     };
 };
 

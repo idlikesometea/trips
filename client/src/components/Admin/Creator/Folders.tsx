@@ -2,7 +2,14 @@ import React from 'react';
 
 import { GoogleDriveFile } from '../../../models/Trips.model';
 
-export default ({folders, onFolderClick, activeFolder}: {folders:GoogleDriveFile[], onFolderClick, activeFolder:any}) => {
+interface componentInterface{
+    onFetchFolders;
+    folders: GoogleDriveFile[],
+    onFolderClick;
+    activeFolder: any;
+}
+
+export default ({folders, onFolderClick, activeFolder, onFetchFolders}: componentInterface) => {
 
     const foldersList = folders.map(folder => {
         const className = `ui medium button ${folder.id === activeFolder ? 'green' : ''}`;
@@ -22,9 +29,13 @@ export default ({folders, onFolderClick, activeFolder}: {folders:GoogleDriveFile
     return (
         <div className="ui segment">
             <h3>Your folders</h3>
-            <div className="ui grid container">
-                { foldersList }
+            <div className="ui grid container" style={{padding:'2em'}}>
+                { foldersList.length ? 
+                    foldersList 
+                    : <button className="ui blue button" onClick={() => onFetchFolders()}>Fetch your folders from Google Drive</button>
+                }
             </div>
+
         </div>
     );
 };

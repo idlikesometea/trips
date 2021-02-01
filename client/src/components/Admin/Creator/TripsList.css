@@ -1,0 +1,5 @@
+.trips-list {
+    max-height: 360px;
+    overflow-y: auto;
+    margin: 1em 0;
+}

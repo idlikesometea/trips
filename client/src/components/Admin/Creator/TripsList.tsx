@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { Trip } from '../../../models/Trips.model';
+import './TripsList.css';
 
 export default ({trips}: {trips:Trip[]}) => {
     const tripsList = trips.map(trip => {
@@ -22,14 +23,13 @@ export default ({trips}: {trips:Trip[]}) => {
 
     return (
         <div className="ui segment">
-            { trips.length
-                ? <div className="ui huge aligned divided list">
-                    <h2>Your trips</h2>
-                    {tripsList}
-                </div>
-                : <h1>You don't have any trips yet</h1>
-            }
-
+            <h2>Your trips</h2>
+            <div className="trips-list">
+                { trips.length
+                    ? <div className="ui huge aligned divided list"> {tripsList} </div>
+                    : <h1>You don't have any trips yet</h1>
+                }
+            </div>
             <Link to="/creator/trip" className="ui button primary">Add a trip</Link>
         </div>
     );

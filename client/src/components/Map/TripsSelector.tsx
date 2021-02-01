@@ -6,11 +6,11 @@ import { fetchTrips, selectTrip, resetTrip } from '../../actions';
 import './TripsSelector.css';
 import Loader from '../ui/Loader';
 
-const TripsList = ({trips, loadingTrips, selectedTrip, loadingTrip}) => {
+const TripsSelector = ({trips, loadingTrips, selectedTrip, loadingTrip}) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(fetchTrips(3));
+		dispatch(fetchTrips());
 	}, [dispatch]);
 
 	const tripsList = trips.map((trip:Trip) => {
@@ -31,7 +31,7 @@ const TripsList = ({trips, loadingTrips, selectedTrip, loadingTrip}) => {
 	);
 
 	return (
-		<div className="trips-list">
+		<div className="trips-selector">
 			{ selectedTrip.name
 				? ( tripSelected )
 				: ( loadingTrips || loadingTrip )
@@ -59,4 +59,4 @@ export default connect(mapStateToProps, {
 	fetchTrips,
 	selectTrip,
 	resetTrip
-})(TripsList);
+})(TripsSelector);

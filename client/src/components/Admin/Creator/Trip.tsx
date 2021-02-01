@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteProps } from 'react-router-dom';
 
 import googleDrive from '../../../services/googleDrive';
-import api from '../../../services/api';
+import { api, authedApi } from '../../../services/api';
 import { Trip as ITrip, TripMock, GoogleDriveFile, FileMetadata} from '../../../models/Trips.model';
 import Folders from './Folders';
 import FolderFiles from './FolderFiles';
@@ -36,7 +36,7 @@ class Trip extends React.Component<RouteProps> {
     state = {...initialState, id: this.props.match.params.id || null};
 
     async fetchTrip() {
-        const response = await api.get(`trips/${this.state.id}`);
+        const response = await authedApi.get(`trips/${this.state.id}`);
 
         if (response.data.folderId) {
             this.onFolderClick(response.data.folderId);

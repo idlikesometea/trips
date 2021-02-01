@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { User } from '../../../models/Auth.model';
-import api from '../../../services/api';
+import {api} from '../../../services/api';
 import Loader from '../../ui/Loader';
 import GoogleAuth from '../GoogleAuth';
 import CountrySelector from './CountrySelector';
@@ -28,16 +28,16 @@ class Creator extends React.Component<Props> {
 
     async getUserTrips () {
         this.setState({userHasMap:false});
-        console.log('::Creator:fetching > userData');
-        await api.get(`user/${this.props.user.id}`)
+        console.log('::Creator:fetching > map');
+        await api.get(`map/${this.props.user.id}`)
             .then(({data}) => {
                 this.setState({
                     userHasMap: data.map || false,
                     map: data.map,
                     userHasTrips: (data.trips.length > 0) || false,
-                    trips: data.trips
+                    trips: data.trips,
+                    selectedCountries: data.countries
                 });
-                if (data.map) this.getSelectedCountries();
             })
             .catch(err => console.log(err));
     }
@@ -48,12 +48,6 @@ class Creator extends React.Component<Props> {
         this.setState({countryOptions: response.data});
     }
     
-    async getSelectedCountries () {
-        const response = await api.get(`map/${this.state.map}`);
-        console.log('::Creator:fetching > selectedCountries');
-        this.setState({selectedCountries: response.data});        
-    }
-
     componentDidMount() {
         this.getCountryOptions();
     }

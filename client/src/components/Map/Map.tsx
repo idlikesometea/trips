@@ -3,13 +3,15 @@ import mapboxgl from 'mapbox-gl';
 import { connect, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import TripsList from './TripsSelector';
+import TripsSelector from './TripsSelector';
 import './Map.css';
 import maps from '../../utils/maps';
 import { Trip } from '../../models/Trips.model';
-import api from '../../services/api';
+import { api } from '../../services/api';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || '';
+
+const exampleCountries = ["BRA", "GRC", "JPN", "AUS", "TUR", "BGR", "ZAF", "CRI", "PRT", "VNM", "MAR", "NOR"];
 
 const Map = ({ trip }: { trip:Trip }) => {
   let mapRef = useRef<HTMLDivElement>(null);
@@ -19,6 +21,7 @@ const Map = ({ trip }: { trip:Trip }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [ countries, setCountries ] = useState<string[]>([]);
+  const [ trips, setTrips ] = useState<Trip[]>([]);
   const [ loadingCountries, setLoadingCountries ] = useState<boolean>(false);
 
   useEffect(() => {
@@ -29,13 +32,14 @@ const Map = ({ trip }: { trip:Trip }) => {
       zoom: 1.8
     }).on('load', () => {
       if (id === 'example') {
-        setCountries(["BRA", "GRC", "JPN", "AUS", "TUR", "BGR", "ZAF", "CRI", "PRT", "VNM", "MAR", "NOR"]);
+        setCountries(exampleCountries);
       } else {
         setLoadingCountries(true);
         api.get(`/map/${id}`)
         .then(response => {
           setLoadingCountries(false);
-          setCountries(response.data);
+          setTrips(response.data.trips);
+          setCountries(response.data.countries);
         })
         .catch(err => setLoadingCountries(false));
       }
@@ -71,7 +75,7 @@ const Map = ({ trip }: { trip:Trip }) => {
 
   return (
     <div className="appContainer">
-      {id === 'example' ? null : <TripsList />}
+      {id === 'example' ? null : <TripsSelector trips />}
       {loadingCountries ? <div className="loading-alert">Loading countries</div> : null}
       <div ref={mapRef} id="mapContainer" className="mapContainer"></div>
     </div>

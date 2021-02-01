@@ -1,4 +1,4 @@
-.trips-list {
+.trips-selector {
     position: absolute;
     top:0;
     background-color: rgba(255, 255, 255, 0.2);
@@ -7,6 +7,9 @@
     margin: 1em;
     z-index: 1;
     min-width: 280px;
+    overflow-y: auto;
+    max-height: 300px;
+    border-radius: 5px;
 }
 
 ul {

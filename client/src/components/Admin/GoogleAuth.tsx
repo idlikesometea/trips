@@ -1,6 +1,7 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
+import jwt from 'jsonwebtoken';
+
 import { signIn, signOut } from '../../actions';
 import { User } from '../../models/Auth.model';
 import Loader from '../ui/Loader';
@@ -38,10 +39,11 @@ class GoogleAuth extends React.Component<Props> {
                 imageUrl: this.auth.currentUser.get().getBasicProfile().getImageUrl(),
                 email: this.auth.currentUser.get().getBasicProfile().getEmail()
             };
-            localStorage.setItem('user', JSON.stringify(user));
+            const token = jwt.sign(user, process.env.REACT_APP_JWT_SECRET);
+            localStorage.setItem('authToken', `Bearer ${token}`);
             this.props.signIn(user);
         } else {
-            localStorage.removeItem('userId');
+            localStorage.removeItem('authToken');
             this.props.signOut();
         }
     }

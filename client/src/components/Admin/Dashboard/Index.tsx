@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 
 import { User } from '../../../models/Auth.model';
-import api from '../../../services/api';
+import { authedApi } from '../../../services/api';
 import Loader from '../../ui/Loader';
 import Landing from './Landing';
 import Placeholder from './Placeholder';
@@ -22,22 +22,22 @@ const initialState = {
 class Dashboard extends Component<Props> {
     state = {...initialState};
 
-    async fetchUserData() {
+    async fetchDashboard() {
         console.log('::Dashboard:fetching > userData');
         this.setState({hasMap: false});
-        const response = await api.get(`user/${this.props.user.id}`);
+        const response = await authedApi.get('dashboard/');
         this.setState({map: response.data.map, trips: response.data.trips, hasMap:true});
     }
 
     componentDidMount() {
         if (this.props.userLogged && this.state.hasMap === null) {
-            this.fetchUserData();
+            this.fetchDashboard();
         }        
     }
 
     componentDidUpdate() {
         if (this.props.userLogged && this.state.hasMap === null) {
-            this.fetchUserData();
+            this.fetchDashboard();
         }
     }
 

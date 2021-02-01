@@ -26,7 +26,7 @@ const initialState = {
 class Creator extends React.Component<Props> {
     state = {...initialState};
 
-    async getUserData () {
+    async getUserTrips () {
         this.setState({userHasMap:false});
         console.log('::Creator:fetching > userData');
         await api.get(`user/${this.props.user.id}`)
@@ -60,7 +60,7 @@ class Creator extends React.Component<Props> {
 
     componentDidUpdate() {
         if (this.props.userLogged && this.state.userHasMap === null) {
-            this.getUserData();
+            this.getUserTrips();
         }
 
         if (this.props.userLogged === false && this.state.userHasMap !== null) {

@@ -38,11 +38,10 @@ class GoogleAuth extends React.Component<Props> {
                 imageUrl: this.auth.currentUser.get().getBasicProfile().getImageUrl(),
                 email: this.auth.currentUser.get().getBasicProfile().getEmail()
             };
-            const accessToken = `Bearer ${this.auth.currentUser.get().getAuthResponse().access_token}`;
-            localStorage.setItem('authed', accessToken);
+            localStorage.setItem('user', JSON.stringify(user));
             this.props.signIn(user);
         } else {
-            localStorage.removeItem('authed');
+            localStorage.removeItem('userId');
             this.props.signOut();
         }
     }

@@ -5,7 +5,6 @@ const app = express();
 
 // routes
 const tripsRoutes = require('./routes/trips');
-const filesRoutes = require('./routes/files');
 
 // controllers
 const configController = require('./controllers/config');
@@ -15,7 +14,6 @@ app.use(bodyParser.json());
 app.use(configController.setHeaders);
 
 app.use('/api', tripsRoutes);
-app.use('/api', filesRoutes);
 
 app.use(errorController.get404);
 

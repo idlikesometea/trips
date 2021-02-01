@@ -11,6 +11,6 @@ router.get('/countries', tripsController.countries);
 router.post('/map', tripsController.saveMap);
 router.get('/map/:mapId', tripsController.map);
 
-router.get('/user/:id', tripsController.userData);
+router.get('/user/:id', tripsController.userTrips);
 
 module.exports = router;

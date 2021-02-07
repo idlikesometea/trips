@@ -1,3 +1,5 @@
+import { Trip } from "./Trips.model";
+
 export interface Viewport {
     width: any;
     height: any;
@@ -15,3 +17,17 @@ export const InitialViewPort: Viewport = {
     longitude: -15,
     zoom: 2
 }
+
+export interface mapStateProps {
+    state: StateProps;
+}
+
+interface StateProps {
+    loading: boolean;
+    countries: string[];
+    trips: Trip[];
+    selectedTrip: Trip;
+    errorMessage: string;
+}
+
+export const exampleCountries = ["BRA", "GRC", "JPN", "AUS", "TUR", "BGR", "ZAF", "CRI", "PRT", "VNM", "MAR", "NOR"];

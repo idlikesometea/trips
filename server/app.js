@@ -4,18 +4,20 @@ const bodyParser = require('body-parser');
 const app = express();
 
 // routes
-const tripsRoutes = require('./routes/trips');
-const filesRoutes = require('./routes/files');
+const mapsRoutes = require('./routes/maps');
+// const creatorRoutes = require('./routes/creator');
+// const dashboardRoutes = require('./routes/dsahboard');
 
 // controllers
 const configController = require('./controllers/config');
 const errorController = require('./controllers/errors');
 
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(configController.setHeaders);
 
-app.use('/api', tripsRoutes);
-app.use('/api', filesRoutes);
+app.use('/api/p', mapsRoutes);
+// app.use('/api', creatorRoutes);
+// app.use('/api', dashboardRoutes);
 
 app.use(errorController.get404);
 

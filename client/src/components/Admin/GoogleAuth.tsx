@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import jwt from 'jsonwebtoken';
 
-import { signIn, signOut } from '../../actions';
+import { signIn, signOut } from '../../state/actions';
 import { User } from '../../models/Auth.model';
 import Loader from '../ui/Loader';
 

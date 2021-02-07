@@ -10,6 +10,10 @@ exports.trips = [
     { id: 9, name: 'SanFran 2020', folderId: '1rh_yBUuJd-mwmOaUIZsCULGhXLt1L22B', startDate:'2020-02-15', endDate:'2020-02-20'}
 ];
 
+exports.trip = {
+    id: 1, name: 'Las Vegas 2018', folderId: '1roVvu5crNM6Lfij2TV_y1j4qCZ5ZRAsw', startDate:'2018-10-28', endDate:'2018-11-01'
+};
+
 exports.tripFiles = [
     {
         id: "1F9jPEXP_C263KkVxe8Uht1RDodhAUMAr", 

@@ -11,7 +11,7 @@ export interface FileMetadata {
     id: string;
     fileExtension?: string;
     webViewLink?: string;
-    location?: Coordinates;
+    location?: any;
     time?: string;
     mimeType?: string;
 };
@@ -31,3 +31,14 @@ export const TripMock:Trip = {
     startDate: '2020-01-01',
     endDate: '2020-01-01'
 };
+
+export interface tripStateProps {
+    state: StateProps;
+}
+
+interface StateProps {
+    trips: Trip[];
+    selectedTrip: Trip;
+    loadingTrips: boolean;
+    loadingTrip: boolean;
+}

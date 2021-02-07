@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api'
+    baseURL: 'http://localhost:8000/api/p/'
 });
 
 const authedApi = axios.create({
@@ -14,4 +14,4 @@ const authedApi = axios.create({
 export {
     api,
     authedApi
-}
+};

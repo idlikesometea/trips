@@ -1,19 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 
-import { Trip } from '../../models/Trips.model';
-import { fetchTrips, selectTrip, resetTrip } from '../../actions';
+import { tripStateProps } from '../../models/Trips.model';
+import { selectTrip, resetTrip } from '../../state/actions';
 import './TripsSelector.css';
 import Loader from '../ui/Loader';
 
-const TripsSelector = ({trips, loadingTrips, selectedTrip, loadingTrip}) => {
+const TripsSelector = ({state}: tripStateProps) => {
 	const dispatch = useDispatch();
 
-	useEffect(() => {
-		dispatch(fetchTrips());
-	}, [dispatch]);
-
-	const tripsList = trips.map((trip:Trip) => {
+	const tripsList = state.trips.map((trip) => {
 		return (
 			<li key={trip.id} onClick={() => {dispatch(selectTrip(trip.id))}}>
 				{trip.name}
@@ -26,19 +22,19 @@ const TripsSelector = ({trips, loadingTrips, selectedTrip, loadingTrip}) => {
 			<button className="circular ui icon button" onClick={() => dispatch(resetTrip())}>
   				<i className="icon angle left"></i>
 			</button>
-			<p> {selectedTrip.name} </p>
+			<p> {state.selectedTrip.name} </p>
 		</div>
 	);
 
 	return (
 		<div className="trips-selector">
-			{ selectedTrip.name
+			{ state.selectedTrip.name
 				? ( tripSelected )
-				: ( loadingTrips || loadingTrip )
+				: ( state.loadingTrips || state.loadingTrip )
 					? null
 					: (<ul> { tripsList } </ul>)
 			}
-			{ loadingTrips || loadingTrip
+			{ state.loadingTrips || state.loadingTrip
 				? <Loader text="Loading" />
 				: null
 			}
@@ -48,15 +44,16 @@ const TripsSelector = ({trips, loadingTrips, selectedTrip, loadingTrip}) => {
 
 const mapStateToProps = state => {
 	return { 
-		trips: state.trips.trips, 
-		selectedTrip: state.trips.trip,
-		loadingTrips: state.trips.loadingTrips,
-		loadingTrip: state.trips.loadingTrip
+		state: {
+			trips: state.map.trips, 
+			selectedTrip: state.trip.trip,
+			loadingTrips: state.map.loading,
+			loadingTrip: state.trip.loading
+		}
 	}
 };
 
 export default connect(mapStateToProps, {
-	fetchTrips,
 	selectTrip,
 	resetTrip
 })(TripsSelector);

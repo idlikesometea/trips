@@ -5,7 +5,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 import App from './App';
-import reducers from './reducers';
+import reducers from './state/reducers';
 
 import 'semantic-ui-css/semantic.min.css';
 

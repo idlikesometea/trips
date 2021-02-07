@@ -12,13 +12,13 @@
     border-radius: 5px;
 }
 
-ul {
+.trips-selector ul {
     list-style-type: none;
     padding: 0;
     font-family: sans-serif;
 }
 
-li {
+.trips-selector li {
     margin-bottom: 0.5em;
     padding: 0.75em;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -26,17 +26,17 @@ li {
     cursor: pointer;
 }
 
-li:hover {
+.trips-selector li:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.active-trip {
+.trips-selector .active-trip {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.active-trip p {
+.trips-selector .active-trip p {
     font-size: large;
     padding: 1em 0.5em;
 }

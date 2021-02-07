@@ -1,28 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { connect, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import TripsSelector from './TripsSelector';
 import './Map.css';
+import TripsSelector from './TripsSelector';
+import { fetchMap } from '../../state/actions';
 import maps from '../../utils/maps';
-import { Trip } from '../../models/Trips.model';
-import { api } from '../../services/api';
+import { mapStateProps } from '../../models/Map.model';
+import { Message } from '../ui/Message';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || '';
 
-const exampleCountries = ["BRA", "GRC", "JPN", "AUS", "TUR", "BGR", "ZAF", "CRI", "PRT", "VNM", "MAR", "NOR"];
-
-const Map = ({ trip }: { trip:Trip }) => {
+const Map = ({state}: mapStateProps) => {
   let mapRef = useRef<HTMLDivElement>(null);
   let map = useRef<any>();
   let markers = useRef<any>([]);
   let activeTrip = useRef<boolean>(false);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [ countries, setCountries ] = useState<string[]>([]);
-  const [ trips, setTrips ] = useState<Trip[]>([]);
-  const [ loadingCountries, setLoadingCountries ] = useState<boolean>(false);
 
   useEffect(() => {
     map.current = new mapboxgl.Map({
@@ -31,35 +27,24 @@ const Map = ({ trip }: { trip:Trip }) => {
       center: [-50, 40],
       zoom: 1.8
     }).on('load', () => {
-      if (id === 'example') {
-        setCountries(exampleCountries);
-      } else {
-        setLoadingCountries(true);
-        api.get(`/map/${id}`)
-        .then(response => {
-          setLoadingCountries(false);
-          setTrips(response.data.trips);
-          setCountries(response.data.countries);
-        })
-        .catch(err => setLoadingCountries(false));
-      }
+      dispatch(fetchMap(id));
     });
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (countries.length) {
-      maps.highlightCountries(map.current, countries);
-      map.current.setFilter('countries', ['in', 'ADM0_A3_IS'].concat(countries));      
+    if (state.countries.length) {
+      maps.highlightCountries(map.current, state.countries);
+      map.current.setFilter('countries', ['in', 'ADM0_A3_IS'].concat(state.countries));      
     }
-  }, [countries]);
+  }, [state.countries]);
 
   useEffect(() => {
-    if (trip.name) {
+    if (state.selectedTrip.name) {
       activeTrip.current = true;
       map.current.setLayoutProperty('countries', 'visibility', 'none');
-      markers.current = maps.addMarkers(map.current, trip.files);
+      markers.current = maps.addMarkers(map.current, state.selectedTrip.files);
       map.current.flyTo({
-        center: maps.getRelativeCenter(trip.files),
+        center: maps.getRelativeCenter(state.selectedTrip.files),
         zoom: 7
       });
     } else if (activeTrip.current){
@@ -71,21 +56,36 @@ const Map = ({ trip }: { trip:Trip }) => {
         zoom: 1
       });
     }
-  }, [trip]);
+  }, [state.selectedTrip]);
 
   return (
     <div className="appContainer">
-      {id === 'example' ? null : <TripsSelector trips />}
-      {loadingCountries ? <div className="loading-alert">Loading countries</div> : null}
+      {<TripsSelector />}
+      
+      {state.loading ? <div className="loading-alert">Loading countries</div> : null}
+      
       <div ref={mapRef} id="mapContainer" className="mapContainer"></div>
+      
+      { state.errorMessage 
+        ? <Message type="error" title="Error" message={state.errorMessage} /> 
+        : null
+      }
     </div>
   );
 };
 
 const mapPropsToState = state => {
-  return { 
-    trip: state.trips.trip
+  return {
+    state: {
+      loading: state.map.loading,
+      countries: state.map.countries,
+      trips: state.map.trips,
+      selectedTrip: state.trip.trip,
+      errorMessage: state.map.errorMessage
+    }
   };
 }
 
-export default connect(mapPropsToState)(Map);
+export default connect(mapPropsToState, {
+  fetchMap
+})(Map);

@@ -5,7 +5,7 @@ export const fetchMap = (mapId) => async dispatch => {
     dispatch({type:'FETCH_MAP_LOAD'});
 
     if (mapId === 'example') {
-        dispatch({type: 'FETCH_MAP_SUCCESS', payload: {map: exampleCountries, trips: []}});
+        return dispatch({type: 'FETCH_MAP_SUCCESS', payload: {countries: exampleCountries, trips: []}});
     }
 
     await api.get(`map/${mapId}`)

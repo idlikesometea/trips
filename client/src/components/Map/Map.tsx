@@ -60,7 +60,7 @@ const Map = ({state}: mapStateProps) => {
 
   return (
     <div className="appContainer">
-      {<TripsSelector />}
+      {state.trips.length ? <TripsSelector /> : null}
       
       {state.loading ? <div className="loading-alert">Loading countries</div> : null}
       

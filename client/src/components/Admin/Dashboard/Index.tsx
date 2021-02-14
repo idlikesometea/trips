@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 
 import { Props } from '../../../models/Dashboard.model';
 import { fetchGenerals, fetchMaps, fetchStats } from '../../../state/actions';
 
 import Loader from '../../ui/Loader';
 import Maps from './Maps';
+import Stats from './Stats';
 
 class Dashboard extends Component<Props> {
 
@@ -21,17 +22,10 @@ class Dashboard extends Component<Props> {
             <div className="ui segment">
                 <h1>Welcome {this.props.auth.user.givenName}!</h1>
                 <img alt="User profile avatar" className="ui avatar tiny image" src={this.props.auth.user.imageUrl} />
+
+                <Link to="/creator" className="ui button green">Create a map</Link>
             </div>
         )
-    }
-
-    renderStats() {
-        return (
-            <div>
-                <h1>Stats</h1>
-                Some stats
-            </div>
-        );
     }
 
     render() {
@@ -46,12 +40,23 @@ class Dashboard extends Component<Props> {
         return (
             <div className="ui container">
                 { this.renderGeneralInformation() }
-                <Maps props={{
-                    maps: this.props.dashboard.maps, 
-                    loading: this.props.dashboard.loading.maps, 
-                    errorMsg: this.props.dashboard.errorMessage.maps}} 
+                <Maps 
+                    props={{
+                        maps: this.props.dashboard.maps, 
+                        loading: this.props.dashboard.loading.maps, 
+                        errorMsg: this.props.dashboard.errorMessage.maps
+                    }} 
+                    onRetry={this.props.fetchMaps}
                 />
-                { this.renderStats() }
+
+                <Stats 
+                    props={{
+                        stats: this.props.dashboard.stats, 
+                        loading: this.props.dashboard.loading.stats, 
+                        errorMsg: this.props.dashboard.errorMessage.stats
+                    }} 
+                    onRetry={this.props.fetchStats}
+                />
             </div>
         )
     }

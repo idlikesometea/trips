@@ -38,3 +38,9 @@ export interface MapsProps {
     loading: boolean;
     errorMsg: string;
 }
+
+export interface StatsProps {
+    stats: Stats;
+    loading: boolean;
+    errorMsg: string;
+}

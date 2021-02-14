@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom';
 
 import { Props } from '../../../models/Dashboard.model';
 import { fetchGenerals, fetchMaps, fetchStats } from '../../../state/actions';

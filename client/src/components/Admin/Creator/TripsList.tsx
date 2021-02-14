@@ -5,6 +5,7 @@ import { Trip } from '../../../models/Trips.model';
 import './TripsList.css';
 
 export default ({trips}: {trips:Trip[]}) => {
+
     const tripsList = trips.map(trip => {
         return (
             <div key={trip.id} className="item">

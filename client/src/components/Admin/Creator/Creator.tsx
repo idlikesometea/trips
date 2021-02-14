@@ -1,83 +1,78 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { User } from '../../../models/Auth.model';
-import {api} from '../../../services/api';
+import { api, authedApi } from '../../../services/api';
 import Loader from '../../ui/Loader';
 import GoogleAuth from '../GoogleAuth';
 import CountrySelector from './CountrySelector';
 import TripsList from './TripsList';
 
-interface Props {
-    userLogged: boolean;
-    user: User;
-};
+import { creatorState, Props, Map } from '../../../models/Creator.model';
+import { Trip } from '../../../models/Trips.model';
+import { Button } from 'semantic-ui-react';
 
-const initialState = {
-    userHasMap: null,
-    map: null,
-    countryOptions: [],
-    selectedCountries: [],
-    userHasTrips: null,
-    trips: [],
-    loading: false
-}
+import './Creator.css';
 
 class Creator extends React.Component<Props> {
-    state = {...initialState};
+    state = {...creatorState};
 
-    async getUserTrips () {
-        this.setState({userHasMap:false});
-        console.log('::Creator:fetching > map');
-        await api.get(`map/${this.props.user.id}`)
-            .then(({data}) => {
-                this.setState({
-                    userHasMap: data.map || false,
-                    map: data.map,
-                    userHasTrips: (data.trips.length > 0) || false,
-                    trips: data.trips,
-                    selectedCountries: data.countries
-                });
-            })
-            .catch(err => console.log(err));
+    componentDidMount() {
+        this.getCountryOptions();
+        const mapId = this.props.match.params.mapId;
+        if (mapId) {
+            this.fetchMap(mapId);
+            this.fetchTrips(mapId);
+        }
+    }
+
+    handleError(error) {
+        if (error.status === 403) {
+            this.props.history.push('/creator');
+        }
+    }
+
+    async fetchMap (mapId) {
+        this.setState({loadingMap: true});
+        await authedApi.get(`creator/map/${mapId}`)
+            .then(({data}: {data:Map}) => this.setState({map: data, selectedCountries: data.countries}))
+            .catch(({response}) => this.handleError(response))
+            .finally(() => this.setState({loadingMap: false}));
+    }
+
+    async fetchTrips (mapId) {
+        this.setState({loadingTrips: true});
+        await authedApi.get(`creator/trips/${mapId}`)
+            .then(({data}: {data:Trip[]}) => this.setState({trips: data}))
+            .catch(({response}) => this.handleError(response))
+            .finally(() => this.setState({loadingMap: false}));
     }
 
     async getCountryOptions () {
-        const response = await api.get('countries');
-        console.log('::Creator:fetching > countryOptions');
-        this.setState({countryOptions: response.data});
+        const { data } = await api.get('countries');
+        this.setState({countryOptions: data});
     }
+
+    onSelectCountries = selectedCountries => this.setState({selectedCountries});
     
-    componentDidMount() {
-        this.getCountryOptions();
-    }
-
-    componentDidUpdate() {
-        if (this.props.userLogged && this.state.userHasMap === null) {
-            this.getUserTrips();
-        }
-
-        if (this.props.userLogged === false && this.state.userHasMap !== null) {
-            this.setState({
-                userHasMap: null,
-                map: null,
-                userHasTrips: null,
-                trips: []
-            });
+    onSaveMap = () => {
+        if (this.props.userLogged) {
+            this.saveMap();
+        } else {
+            this.savePublicMap();
         }
     }
 
-    onSelectCountries = selectedCountries => {console.log(selectedCountries); this.setState({selectedCountries: selectedCountries})};
-    
-    onSaveCountries = () => {
-        console.log('::Creator:saving > countries')
-        this.setState({loading: true});
-        api.post('map', {countries: this.state.selectedCountries})
-            .then(({data}) => {
-                this.setState({map: data.id});
-            })
-            .catch(err => console.log(err))
-            .finally(() => this.setState({loading: false}));
+    saveMap = () => {
+
+    }
+
+    savePublicMap = () => {
+        this.setState({loadingMap: true});
+        const countries =this.state.selectedCountries;
+        api.post('map', { countries })
+            .then(({data}) => this.props.history.push(`m/${data}`))
+            .catch(({response}) => this.handleError(response))
+            .finally(() => this.setState({loadingMap: false}));
     }
 
     renderPlaceholder() {
@@ -102,14 +97,32 @@ class Creator extends React.Component<Props> {
 
     render() {
         return (
-            <div className="ui container">
+            <div className="ui container creator">
+                {/* <div className="field">
+                    <input 
+                        type="text" 
+                        autoComplete="off" 
+                        value={this.state.map.name} 
+                        onChange={({target}) => 
+                        this.setState({map: {name:target.value}})} 
+                    />
+                </div> */}
+
+                <div className="ui justified header">
+                    <h1>Title</h1>
+                    <Button
+                        disabled={!this.state.selectedCountries.length} 
+                        onClick={() => this.onSaveMap()}
+                    >
+                        Save map
+                    </Button>
+                </div>
+
                 <CountrySelector 
                     countryOptions={this.state.countryOptions}
                     selectedCountries={this.state.selectedCountries}
                     onSelectCountries={this.onSelectCountries}
-                    onSaveCountries={this.onSaveCountries}
-                    map={this.state.map}
-                    loading={this.state.loading}
+                    loading={this.state.loadingMap}
                 />
 
                 {this.props.userLogged 

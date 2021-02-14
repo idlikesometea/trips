@@ -5,8 +5,8 @@ const app = express();
 
 // routes
 const mapsRoutes = require('./routes/maps');
+const dashboardRoutes = require('./routes/dashboard');
 // const creatorRoutes = require('./routes/creator');
-// const dashboardRoutes = require('./routes/dsahboard');
 
 // controllers
 const configController = require('./controllers/config');
@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(configController.setHeaders);
 
 app.use('/api/p', mapsRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 // app.use('/api', creatorRoutes);
 // app.use('/api', dashboardRoutes);
 

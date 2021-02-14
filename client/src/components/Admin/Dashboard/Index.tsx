@@ -1,79 +1,71 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom'
 
-import { User } from '../../../models/Auth.model';
-import { authedApi } from '../../../services/api';
+import { Props } from '../../../models/Dashboard.model';
+import { fetchGenerals, fetchMaps, fetchStats } from '../../../state/actions';
+
 import Loader from '../../ui/Loader';
-import Landing from './Landing';
-import Placeholder from './Placeholder';
-
-interface Props {
-    userLogged: boolean;
-    user: User
-};
-
-const initialState = {
-    hasMap: null,
-    map: null,
-    trips: []
-};
+import Maps from './Maps';
 
 class Dashboard extends Component<Props> {
-    state = {...initialState};
-
-    async fetchDashboard() {
-        console.log('::Dashboard:fetching > userData');
-        this.setState({hasMap: false});
-        const response = await authedApi.get('dashboard/');
-        this.setState({map: response.data.map, trips: response.data.trips, hasMap:true});
-    }
 
     componentDidMount() {
-        if (this.props.userLogged && this.state.hasMap === null) {
-            this.fetchDashboard();
-        }        
+        this.props.fetchGenerals();
+        this.props.fetchStats();
+        this.props.fetchMaps();
     }
 
-    componentDidUpdate() {
-        if (this.props.userLogged && this.state.hasMap === null) {
-            this.fetchDashboard();
-        }
+    renderGeneralInformation() {
+        return (
+            <div className="ui segment">
+                <h1>Welcome {this.props.auth.user.givenName}!</h1>
+                <img alt="User profile avatar" className="ui avatar tiny image" src={this.props.auth.user.imageUrl} />
+            </div>
+        )
     }
 
-    renderDashboard() {
-        if (this.props.userLogged) {
-            if (this.state.hasMap) {
-                return (
-                    <div className="ui segment">
-                        <h1>Welcome {this.props.user.givenName}!</h1>
-                        <img alt="User profile avatar" className="ui avatar tiny image" src={this.props.user.imageUrl} />
-                        <h2>You have created a map</h2>
-                        <Link className="ui button primary" to="creator">Update your map</Link>
-
-                        <Link className="ui button green" style={{float:'right'}} to="m/3f4sdf4234234">See your map</Link>
-                    </div>
-                )
-            } else {
-                return <Placeholder />;
-            }
-        }
-        return <Loader />;
+    renderStats() {
+        return (
+            <div>
+                <h1>Stats</h1>
+                Some stats
+            </div>
+        );
     }
 
     render() {
-        if (this.props.userLogged === null) {
+        if (this.props.auth.userLogged === null) {
             return <Loader />;
-        } else if (!this.props.userLogged) {
-            return <Landing />;
         }
 
-        return <div className="ui container">{ this.renderDashboard() }</div>
+        if (this.props.auth.userLogged === false) {
+            return <Redirect to="/" />
+        }
+
+        return (
+            <div className="ui container">
+                { this.renderGeneralInformation() }
+                <Maps props={{
+                    maps: this.props.dashboard.maps, 
+                    loading: this.props.dashboard.loading.maps, 
+                    errorMsg: this.props.dashboard.errorMessage.maps}} 
+                />
+                { this.renderStats() }
+            </div>
+        )
     }
 }
 
 const mapStateToProps = (state) => {
-    return state.auth;
+    return {
+        auth: state.auth,
+        dashboard: state.dashboard
+    }
 };
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps, {
+    fetchGenerals,
+    fetchStats,
+    fetchMaps
+})(Dashboard);

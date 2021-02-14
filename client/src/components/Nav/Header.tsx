@@ -11,9 +11,10 @@ const Header = ({auth}) => {
     return (
         <Menu inverted id="app-menu" size="mini">
             <Menu.Item>
-                <Link to="/">
-                    { auth.userLogged === false ? 'Create your map' : 'Dashboard' }
-                </Link>
+                {   auth.userLogged === false
+                    ? <Link to="/creator">Create your map</Link>
+                    : <Link to="/dashboard">Dashboard</Link>
+                }
             </Menu.Item>
             <Menu.Item position="right">
                 { !auth.userLogged

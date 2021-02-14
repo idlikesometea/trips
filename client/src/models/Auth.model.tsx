@@ -5,3 +5,8 @@ export interface User {
     email: string;
     imageUrl: string;
 }
+
+export interface Auth {
+    userLogged: boolean;
+    user: User;
+}

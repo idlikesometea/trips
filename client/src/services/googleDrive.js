@@ -10,6 +10,7 @@ const request = axios.create({
 });
 
 const getFolders = () => {
+    console.log(window.gapi);
     return window.gapi.client.load('drive', 'v3')
         .then(() => window.gapi.client.init({})
         .then(() => window.gapi.client.drive.files.list({ q: "mimeType='application/vnd.google-apps.folder'"}))

@@ -10,15 +10,17 @@ class Index extends React.Component<RouteProps> {
     render() {
         return (
             <div>
+                <GuardedRoute 
+                    exact
+                    path={`${this.props.match.path}/trip/:id?`} 
+                    auth={this.props.userLogged}
+                    component={Trip} />
+
                 <Route 
                     exact 
                     path={`${this.props.match.path}/:mapId?`} 
                     component={Creator} />
 
-                <GuardedRoute 
-                    path={`${this.props.match.path}/trip/:id?`} 
-                    auth={this.props.userLogged}
-                    component={Trip} />
             </div>
         );
     }

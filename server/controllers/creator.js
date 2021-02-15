@@ -1,4 +1,4 @@
-const { trips, userCountries } = require("../utils/database");
+const { trips, userCountries, tripFiles } = require("../utils/database");
 
 exports.getMap = (req, res) => {
     const user = req.user;
@@ -26,16 +26,18 @@ exports.getTrip = (req, res) => {
     const tripId = parseInt(req.params.tripId);
     const trip = trips.find(trip => trip.id === tripId);
     setTimeout(() => {
-        res.status(200).json(trip);
+        res.status(200).json({...trip, files: tripFiles});
     }, 500);
 };
 
 exports.postMap = (req, res) => {
     const user = req.user;
     const mapId = req.params.mapId;
-    const map = JSON.parse(req.body.map);
+    const map = req.body;
     setTimeout(() => {
-        res.status(200).json({mapId, map});
+        res.status(201).json({
+            mapId: mapId || Math.random()
+        });
     }, 500);
 };
 
@@ -44,7 +46,7 @@ exports.postTrip = (req, res) => {
     const tripId = req.params.tripId;
     const trip = req.body.trip;
     setTimeout(() => {
-        res.status(200).json({tripId, trip});
+        res.status(201).json({tripId, trip});
     }, 500);
 };
 

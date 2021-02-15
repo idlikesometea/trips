@@ -11,7 +11,7 @@ exports.getMaps = (req, res) => {
     ];
     setTimeout(() => {
         res.status(200).json(maps);
-    }, 1500);
+    }, 900);
 };
 
 exports.getStats = (req, res) => {
@@ -24,6 +24,6 @@ exports.getStats = (req, res) => {
     };
     setTimeout(() => {
         res.status(500).json('There was an error with your request');
-    }, 2000);
+    }, 1200);
     // res.status(200).json(stats);
 };

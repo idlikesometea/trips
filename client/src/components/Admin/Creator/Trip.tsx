@@ -2,55 +2,41 @@ import React from 'react';
 import { RouteProps } from 'react-router-dom';
 
 import googleDrive from '../../../services/googleDrive';
-import { api, authedApi } from '../../../services/api';
-import { Trip as ITrip, TripMock, GoogleDriveFile, FileMetadata} from '../../../models/Trips.model';
+import { authedApi } from '../../../services/api';
+import { tripInitialState } from '../../../models/Trips.model';
 import Folders from './Folders';
 import FolderFiles from './FolderFiles';
 import TripInformation from './TripInformation';
 import TripFiles from './TripFiles';
 
-interface stateInterface {
-    id: any;
-    trip: ITrip;
-    tripFiles: FileMetadata[];
-    folders: GoogleDriveFile[];
-    loading:boolean;
-    folderFiles: GoogleDriveFile[];
-    activeFolder:any;
-    showError:boolean;
-    errorMessage?:string;
-}
-
-const initialState:stateInterface = {
-    id: null,
-    trip: TripMock,
-    tripFiles: [],
-    folders: [],
-    folderFiles: [],
-    loading: false,
-    activeFolder: null,
-    showError: false
-};
 
 class Trip extends React.Component<RouteProps> {
-    state = {...initialState, id: this.props.match.params.id || null};
+    state = {...tripInitialState, id: this.props.match.params.id || null};
+
+    componentDidMount() {
+        if (this.state.id) {
+            this.fetchTrip();
+            this.fetchFolders();
+        }
+    }
 
     async fetchTrip() {
-        const response = await authedApi.get(`trips/${this.state.id}`);
-
-        if (response.data.folderId) {
-            this.onFolderClick(response.data.folderId);
-        }
-
-        this.setState({
-            trip: response.data, 
-            tripFiles: response.data.files,
-            activeFolder: response.data.folderId
-        });
+        await authedApi.get(`creator/trip/${this.state.id}`)
+            .then(({data}) => {
+                if (data.folderId) {
+                    this.onFolderClick(data.folderId);
+                }
+                this.setState({
+                    mapId: data.mapId,
+                    trip: data,
+                    tripFiles: data.files,
+                    activeFolder: data.folderId
+                })
+            })
+            .catch(({response}) => console.error(response));
     }
 
     fetchFolders = () => {
-        console.log(':: fetching folder');
         googleDrive.getFolders()
             .then(folders => this.setState({folders}))
             .catch(({message}) => this.showAlert(message))
@@ -67,10 +53,10 @@ class Trip extends React.Component<RouteProps> {
     onSaveClick = event => {
         event.preventDefault();
         this.setState({loading: true});
-        api.post('trips/', {...this.state.trip})
+        authedApi.post('creator/trip/', {...this.state.trip})
             .then(() => {
                 console.log(':::saving trip');
-                setTimeout(() => this.props.history.push('/creator/'), 100);
+                setTimeout(() => this.props.history.push(`/creator/${this.state.mapId}`), 100);
             })
             .catch(({response}) => this.showAlert(response.data))
             .finally(() => this.setState({loading: false}));
@@ -95,12 +81,6 @@ class Trip extends React.Component<RouteProps> {
         } else {
             const tripFiles = this.state.tripFiles.filter(trip => trip.id !== fileId);
             this.setState({tripFiles: tripFiles});
-        }
-    }
-
-    componentDidMount() {
-        if (this.state.id) {
-            this.fetchTrip();
         }
     }
 

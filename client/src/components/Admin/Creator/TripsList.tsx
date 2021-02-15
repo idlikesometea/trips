@@ -1,10 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Map } from '../../../models/Creator.model';
 
 import { Trip } from '../../../models/Trips.model';
 import './TripsList.css';
 
-export default ({trips}: {trips:Trip[]}) => {
+export default ({trips, map}: {trips:Trip[], map:Map}) => {
+
+    if (map.name === '') {
+        return (
+            <div className="ui segment">
+                <h2>Your trips</h2>
+                <h4>Create a map to add your first trip.</h4>
+            </div>
+        )
+    }
 
     const tripsList = trips.map(trip => {
         return (
@@ -31,7 +41,7 @@ export default ({trips}: {trips:Trip[]}) => {
                     : <h1>You don't have any trips yet</h1>
                 }
             </div>
-            <Link to="/creator/trip" className="ui button primary">Add a trip</Link>
+            <Link to="/creator/trip/" className="ui button primary">Add a trip</Link>
         </div>
     );
 };

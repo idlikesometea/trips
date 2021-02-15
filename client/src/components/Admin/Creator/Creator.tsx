@@ -63,7 +63,17 @@ class Creator extends React.Component<Props> {
     }
 
     saveMap = () => {
-
+        this.setState({loadingMap: true});
+        const data = { name: this.state.map.name, countries: this.state.selectedCountries };
+        const mapId = this.props.match.params.mapId;
+        const url = mapId ? `creator/map/${mapId}` : 'creator/map';
+        authedApi.post(url, data)
+            .then(({data}) => { 
+                this.props.history.push(`/creator/${data.mapId}`);
+                this.fetchMap(data.mapId);
+            })
+            .catch(({response}) => this.handleError(response))
+            .finally(() => this.setState({loadingMap: false}));
     }
 
     savePublicMap = () => {
@@ -95,7 +105,19 @@ class Creator extends React.Component<Props> {
         );
     }
 
+    renderTripList() {
+        return (
+            this.props.userLogged 
+                ? <TripsList trips={this.state.trips} map={this.state.map}/>
+                : this.renderPlaceholder()
+        )
+    }
+
     render() {
+        if (this.props.match.params.mapId === 'trip') {
+            return null;
+        }
+        
         return (
             <div className="ui container creator">
                 {/* <div className="field">
@@ -107,15 +129,13 @@ class Creator extends React.Component<Props> {
                         this.setState({map: {name:target.value}})} 
                     />
                 </div> */}
-
-                <div className="ui justified header">
-                    <h1>Title</h1>
-                    <Button
+                <div className="ui basic segment title">
+                    <h1> Title </h1>
+                    <Button 
+                        className="primary" 
                         disabled={!this.state.selectedCountries.length} 
-                        onClick={() => this.onSaveMap()}
-                    >
-                        Save map
-                    </Button>
+                        loading={this.state.loadingMap}
+                        onClick={() => this.onSaveMap()}>Save map</Button>
                 </div>
 
                 <CountrySelector 
@@ -125,10 +145,7 @@ class Creator extends React.Component<Props> {
                     loading={this.state.loadingMap}
                 />
 
-                {this.props.userLogged 
-                    ? <TripsList trips={this.state.trips}/>
-                    : this.renderPlaceholder()
-                }
+                { this.renderTripList() }
             </div>
         );
     }

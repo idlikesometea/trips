@@ -42,3 +42,28 @@ interface StateProps {
     loadingTrips: boolean;
     loadingTrip: boolean;
 }
+
+export interface TripState {
+    id: any;
+    mapId: any;
+    trip: Trip;
+    tripFiles: FileMetadata[];
+    folders: GoogleDriveFile[];
+    loading:boolean;
+    folderFiles: GoogleDriveFile[];
+    activeFolder:any;
+    showError:boolean;
+    errorMessage?:string;
+}
+
+export const tripInitialState:TripState = {
+    id: null,
+    mapId: null,
+    trip: TripMock,
+    tripFiles: [],
+    folders: [],
+    folderFiles: [],
+    loading: false,
+    activeFolder: null,
+    showError: false
+};
